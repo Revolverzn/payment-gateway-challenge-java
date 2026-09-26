@@ -4,7 +4,6 @@ import com.checkout.payment.gateway.enums.PaymentStatus;
 import com.checkout.payment.gateway.exception.IdempotencyConflictException;
 import com.checkout.payment.gateway.flow.PaymentProcessContext;
 import com.checkout.payment.gateway.model.PostPaymentResponse;
-import com.checkout.payment.gateway.observability.PaymentMetrics;
 import com.checkout.payment.gateway.repository.PaymentsRepository;
 import com.yomahub.liteflow.core.NodeComponent;
 import org.springframework.stereotype.Component;
@@ -24,12 +23,9 @@ import org.springframework.stereotype.Component;
 public class PaymentInitiateNode extends NodeComponent {
 
   private final PaymentsRepository paymentsRepository;
-  private final PaymentMetrics paymentMetrics;
 
-  public PaymentInitiateNode(PaymentsRepository paymentsRepository,
-      PaymentMetrics paymentMetrics) {
+  public PaymentInitiateNode(PaymentsRepository paymentsRepository) {
     this.paymentsRepository = paymentsRepository;
-    this.paymentMetrics = paymentMetrics;
   }
 
   @Override
@@ -46,7 +42,6 @@ public class PaymentInitiateNode extends NodeComponent {
             "A payment with this Idempotency-Key is still being initiated; retry later");
       }
       context.setReplayedResponse(stored);
-      paymentMetrics.recordReplay();
       setIsEnd(true);
       return;
     }

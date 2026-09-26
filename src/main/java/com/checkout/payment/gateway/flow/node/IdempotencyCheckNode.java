@@ -5,7 +5,6 @@ import com.checkout.payment.gateway.exception.IdempotencyConflictException;
 import com.checkout.payment.gateway.flow.PaymentProcessContext;
 import com.checkout.payment.gateway.model.PostPaymentRequest;
 import com.checkout.payment.gateway.model.PostPaymentResponse;
-import com.checkout.payment.gateway.observability.PaymentMetrics;
 import com.checkout.payment.gateway.repository.PaymentsRepository;
 import com.yomahub.liteflow.core.NodeComponent;
 import java.util.Optional;
@@ -26,12 +25,9 @@ import org.springframework.stereotype.Component;
 public class IdempotencyCheckNode extends NodeComponent {
 
   private final PaymentsRepository paymentsRepository;
-  private final PaymentMetrics paymentMetrics;
 
-  public IdempotencyCheckNode(PaymentsRepository paymentsRepository,
-      PaymentMetrics paymentMetrics) {
+  public IdempotencyCheckNode(PaymentsRepository paymentsRepository) {
     this.paymentsRepository = paymentsRepository;
-    this.paymentMetrics = paymentMetrics;
   }
 
   @Override
@@ -58,7 +54,6 @@ public class IdempotencyCheckNode extends NodeComponent {
     }
 
     context.setReplayedResponse(stored);
-    paymentMetrics.recordReplay();
     // Skip every remaining node: no bank call, no second persistence.
     setIsEnd(true);
   }
