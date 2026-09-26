@@ -1,0 +1,190 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="300" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>02 - THE CONTRACT</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="34" width="848" height="40">
+      <content textType="title" fontSize="28" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The contract: two endpoints</p>
+      </content>
+    </shape>
+    <line startX="56" startY="76" endX="904" endY="76">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="104" width="72" height="30">
+      <fill>
+        <fillColor color="rgba(15,36,64,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="110" width="72" height="20">
+      <content textType="body" fontSize="13" fontFamily="Roboto Mono" bold="true" color="rgba(255,255,255,1)" textAlign="center" wrap="false">
+        <p>POST</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="144" topLeftY="108" width="280" height="26">
+      <content textType="body" fontSize="16" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>/payments</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="146" width="420" height="24">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>Process a card payment, store the outcome.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="184" width="140" height="22">
+      <content textType="body" fontSize="13" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Request body</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="210" width="240" height="96">
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.25" textAlign="left">
+        <p>card_number</p>
+        <p>expiry_month, expiry_year</p>
+        <p>currency (max 3, as required)</p>
+        <p>amount</p>
+        <p>cvv</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="316" width="420" height="24">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>Optional header: Idempotency-Key</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="348" width="420" height="44">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(138,148,166,1)" wrap="false" textAlign="left">
+        <p>Declined still returns 201 - the status lives in the body.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="404" width="120" height="24">
+      <content textType="body" fontSize="13" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Status codes</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="434" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>201</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="116" topLeftY="434" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>400</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="176" topLeftY="434" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>409</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="236" topLeftY="434" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>502</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="296" topLeftY="434" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>503</p>
+      </content>
+    </shape>
+    <line startX="484" startY="104" endX="484" endY="470">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="rect" topLeftX="520" topLeftY="104" width="72" height="30">
+      <fill>
+        <fillColor color="rgba(39,121,167,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="110" width="72" height="20">
+      <content textType="body" fontSize="13" fontFamily="Roboto Mono" bold="true" color="rgba(255,255,255,1)" textAlign="center" wrap="false">
+        <p>GET</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="608" topLeftY="108" width="280" height="26">
+      <content textType="body" fontSize="16" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>/payment/{id}</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="146" width="384" height="24">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>Retrieve a previously stored payment.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="184" width="384" height="64">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.3" textAlign="left">
+        <p>Returns the stored record: status, card last four digits, amount, currency, timestamps.</p>
+        <p>Card number and cvv are never returned.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="316" width="120" height="24">
+      <content textType="body" fontSize="13" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Status codes</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="348" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>200</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="580" topLeftY="348" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>400</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="640" topLeftY="348" width="52" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>404</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="404" width="384" height="64">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(138,148,166,1)" lineSpacing="multiple:1.3" textAlign="left">
+        <p>404 on unknown id: we do not confirm which payment ids exist.</p>
+        <p>No card data is stored unencrypted - more on security later.</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="56" topLeftY="472" width="848" height="26">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="68" topLeftY="476" width="824" height="20">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Swagger UI: /swagger-ui/index.html - docs generated from annotations, so they cannot drift from the code.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>04 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>The whole public surface is two endpoints. POST /payments takes the card data and returns the outcome; GET /payment/{id} lets the merchant look a past payment back up. A subtle design point: Authorized and Declined both come back as 201 - HTTP success means we processed the request, and the business answer is a field in the body. Only Rejected, where we refuse to even try, is a 400. The full contract is generated into Swagger UI from the controller annotations, so the documentation cannot drift from the code.</p>
+    </content>
+  </note>
+</slide>

@@ -1,0 +1,71 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 5 / 11 - IDEMPOTENCY</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Idempotency: never charge twice</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>if (idempotencyKey != null) {</p>
+        <p>  Optional&lt;Payment&gt; existing =</p>
+        <p>      repository.findById(idempotencyKey);</p>
+        <p>  if (existing.isPresent()) {</p>
+        <p>    if (!samePayload(existing.get(), request)) {</p>
+        <p>      throw new PaymentConflictException(); // 409</p>
+        <p>    }</p>
+        <p>    context.setStoredPayment(existing.get());</p>
+        <p>    context.setPaymentStatus(PaymentStatus.PENDING);</p>
+        <p>    chain.setIsEnd(true); // replay - stop before bank</p>
+        <p>  }</p>
+        <p>}</p>
+        <p>// payload compare ignores cvv - clients may</p>
+        <p>// regenerate it when they retry</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>A retried request must not charge twice - the core payments guarantee.</p></li>
+          <li><p>Replay: return the stored result, end the chain - the bank is not called again.</p></li>
+          <li><p>Same key, different payload - 409; we never silently override a stored payment.</p></li>
+          <li><p>The key doubles as the primary key - the unique index enforces exactly-once at the storage layer.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: idempotency lives before the bank on purpose - the check is cheap, and the retry is safe.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>11 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Stop five is where the first big guarantee is enforced. If the merchant sent an Idempotency-Key and we already have a payment with that key, we compare the payloads. If they differ, that is a 409 - we will not silently overwrite a stored payment. If they match, this is a retry: we put the stored result on the context and end the chain right here, before the bank is ever called again. Notice the key is also the primary key in storage, so the database itself enforces exactly-once, not just our check.</p>
+    </content>
+  </note>
+</slide>

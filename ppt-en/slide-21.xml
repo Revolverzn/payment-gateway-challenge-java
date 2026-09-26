@@ -1,0 +1,86 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>05 - TECHNICAL DOCUMENTATION</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Documentation: three layers, zero drift</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="96" width="60" height="26">
+      <content textType="body" fontSize="18" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>01</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="92" width="424" height="28">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Swagger / OpenAPI - generated, not written</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="126" width="776" height="44">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Every endpoint documents its status codes inline via annotations - 201 / 400 / 409 / 502 / 503. The docs are generated from the code, so they cannot drift.</p>
+      </content>
+    </shape>
+    <line startX="56" startY="184" endX="904" endY="184">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="200" width="60" height="26">
+      <content textType="body" fontSize="18" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>02</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="196" width="424" height="28">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>README - how to actually run it</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="230" width="776" height="44">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Compose profiles for gateway and bank simulator, curl examples for both endpoints, the simulator's card-number rules, and the coverage gate.</p>
+      </content>
+    </shape>
+    <line startX="56" startY="288" endX="904" endY="288">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="304" width="60" height="26">
+      <content textType="body" fontSize="18" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>03</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="300" width="424" height="28">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>SOLUTION.md - the reasoning behind the code</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="334" width="776" height="64">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Design decisions, the trade-offs that came with them, the security scope, and what was deliberately left out - so the reviewer sees the thinking, not just the outcome.</p>
+      </content>
+    </shape>
+    <line startX="56" startY="412" endX="904" endY="412">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="436" width="848" height="48">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(138,148,166,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>That is the documentation story: what the API does is generated; how to run it is one page; why it is built this way is written down.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>21 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Documentation comes in three layers. The API contract is generated into Swagger UI from the controller annotations, so it cannot drift. The README tells you how to run the whole thing - compose profiles, curl examples, the simulator's rules. And SOLUTION.md is the layer I am most proud of: it records the design decisions and trade-offs, so a reviewer can see the reasoning rather than just the code. Documentation is not a page count; it is the absence of surprises.</p>
+    </content>
+  </note>
+</slide>

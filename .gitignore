@@ -35,3 +35,19 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Local-only docs ###
+项目介绍.md
+SOLUTION.md
+代码走读.md
+面试问答.md
+面试讲稿-六项能力.md
+文件详解.md
+Presentation-中英走读.md
+技术点话术-五讲.md
+Payment-Gateway-Presentation.pptx
+Payment-Gateway-Presentation-EN.pptx
+面试讲稿-中英双语-24页.md
+Payment-Gateway-Interview.pptx
+代码走读讲稿-中英双语.md
+五个技术点讲稿-中英双语.md

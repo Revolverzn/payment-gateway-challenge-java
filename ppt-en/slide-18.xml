@@ -1,0 +1,138 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>04 - CROSS-CUTTING</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>One error contract, stable by construction</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <table topLeftX="56" topLeftY="92" width="848" height="250">
+      <colgroup>
+        <col width="96"/>
+        <col width="418"/>
+        <col width="334"/>
+      </colgroup>
+      <tr height="32">
+        <td>
+          <fill><fillColor color="rgba(15,36,64,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(255,255,255,1)" textAlign="center"><p>Status</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(15,36,64,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" bold="true" color="rgba(255,255,255,1)" textAlign="left"><p>Meaning</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(15,36,64,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" bold="true" color="rgba(255,255,255,1)" textAlign="left"><p>Example trigger</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>400</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Request invalid - structured field errors</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>card_number fails the Luhn check</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>404</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Unknown payment id on GET</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>GET /payment/not-there</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>409</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Same idempotency key, different payload</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Same key reused with a new amount</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>502</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Bank returned 4xx - our request was refused</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>The bank replies 422 to the request</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>503</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Bank 5xx or timeout - result unknown</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(247,249,251,1)"/></fill>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Bank down, or read timeout hit</p></content>
+        </td>
+      </tr>
+      <tr height="36">
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Roboto Mono" bold="true" color="rgba(15,36,64,1)" textAlign="center"><p>500</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>Unexpected bug - mapped once, last resort</p></content>
+        </td>
+        <td>
+          <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(61,74,92,1)" textAlign="left"><p>An NPE inside a flow node</p></content>
+        </td>
+      </tr>
+    </table>
+    <shape type="text" topLeftX="56" topLeftY="364" width="848" height="22">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>One @ControllerAdvice owns every mapping - adding an error type never changes an endpoint.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="396" width="848" height="22">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>400 errors are structured: a code per rule, the offending field, and a plain-language message.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="432" width="848" height="44">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(138,148,166,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>The mapping between failure and HTTP code happens in exactly one place - so the Swagger docs, the tests, and the client's error handling all agree.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>18 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Every failure the gateway can produce maps to one of six statuses, and all of that mapping lives in a single exception handler. 400 means the request was invalid and we tell the merchant which field. 404 means unknown id. 409 is the idempotency conflict. 502 means the bank refused our request; 503 means we genuinely cannot know the result. 500 is the last-resort catch. Because this mapping exists in one place, the documentation, the tests, and the clients all see the same contract.</p>
+    </content>
+  </note>
+</slide>

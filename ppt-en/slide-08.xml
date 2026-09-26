@@ -1,0 +1,69 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 2 / 11 - THE SERVICE</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Service: state in the context, nodes stay stateless</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>public PostPaymentResponse processPayment(</p>
+        <p>    PostPaymentRequest request, String idempotencyKey) {</p>
+        <p>  PaymentProcessContext context =</p>
+        <p>      new PaymentProcessContext(request, idempotencyKey);</p>
+        <p>  return chain.execute2Resp("payment_process", "pm",</p>
+        <p>      context, (ctx, index, req) -&gt; {</p>
+        <p>        PaymentStatus status = ctx.getPaymentStatus();</p>
+        <p>        boolean replay = PaymentStatus.PENDING.equals(status);</p>
+        <p>        return PostPaymentResponse.from(</p>
+        <p>            replay ? ctx.getStoredPayment()</p>
+        <p>                   : ctx.getProcessedPayment());</p>
+        <p>      });</p>
+        <p>}</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>One context per request; the nodes are stateless singletons - concurrency without locks.</p></li>
+          <li><p>Context Object + Pipeline: shared state travels, behavior stays in the nodes.</p></li>
+          <li><p>After the chain, one ternary decides: replay the stored payment or return the fresh result.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: ordering plus a single shared state is what lets us reason about "charged exactly once".</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>08 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>From the controller we go into the service. The first thing it does is create a PaymentProcessContext - one object that carries everything this request will ever need. That single decision shapes the whole codebase: because the context holds all mutable state, the eight nodes can be stateless singletons, and we get safe concurrency without a single lock. The service also owns the exit: after the chain finishes, one ternary decides whether this was a fresh payment or a replay of a stored one.</p>
+    </content>
+  </note>
+</slide>

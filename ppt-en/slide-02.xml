@@ -1,0 +1,113 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="300" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>AGENDA</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="34" width="848" height="44">
+      <content textType="title" fontSize="28" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>How this hour runs</p>
+      </content>
+    </shape>
+    <line startX="56" startY="76" endX="904" endY="76">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="108" width="60" height="34">
+      <content textType="body" fontSize="20" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>01</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="112" width="312" height="28">
+      <content textType="body" fontSize="16" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The system in one picture</p>
+      </content>
+    </shape>
+    <line startX="56" startY="152" endX="440" endY="152">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="168" width="60" height="34">
+      <content textType="body" fontSize="20" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>02</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="172" width="312" height="28">
+      <content textType="body" fontSize="16" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The contract: two endpoints</p>
+      </content>
+    </shape>
+    <line startX="56" startY="212" endX="440" endY="212">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="228" width="60" height="34">
+      <content textType="body" fontSize="20" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>03</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="232" width="312" height="56">
+      <content textType="body" fontSize="16" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>One request through the code - 8 stops</p>
+      </content>
+    </shape>
+    <line startX="56" startY="300" endX="440" endY="300">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="316" width="60" height="34">
+      <content textType="body" fontSize="20" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>04</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="320" width="312" height="56">
+      <content textType="body" fontSize="16" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Errors, security, observability</p>
+      </content>
+    </shape>
+    <line startX="56" startY="388" endX="440" endY="388">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="404" width="60" height="34">
+      <content textType="body" fontSize="20" fontFamily="Inter" bold="true" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>05</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="128" topLeftY="408" width="312" height="56">
+      <content textType="body" fontSize="16" fontFamily="Inter" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Packaging, docs, testing, scope</p>
+      </content>
+    </shape>
+    <line startX="484" startY="108" endX="484" endY="480">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="520" topLeftY="108" width="384" height="32">
+      <content textType="body" fontSize="18" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The rules of the hour</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="156" width="384" height="300">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <ul>
+          <li><p>I lead the walkthrough - jump in any time.</p></li>
+          <li><p>Every design choice is tied to a payments risk.</p></li>
+          <li><p>The five competencies: Observability, Packaging / Hosting, Technical Documentation, API Design, Code Design, Testing Mindset.</p></li>
+          <li><p>Probe as hard as you like - this exercise is built to be argued with.</p></li>
+          <li><p>If a trade-off looks wrong to you, I will tell you what I gave up and why.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="440" width="384" height="44">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>Goal: every guarantee traces to a line of code.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>02 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Here is the shape of the hour. First I put the gateway in its world - shopper, merchant, gateway, bank. Then the two endpoints we expose. Then the main event: one payment request walked through eight stops in the order the code runs. After that I cover the cross-cutting concerns - errors, security, observability - then packaging, documentation and testing. Feel free to interrupt at any point; this is a conversation, not a lecture.</p>
+    </content>
+  </note>
+</slide>

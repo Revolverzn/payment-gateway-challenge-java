@@ -1,0 +1,224 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="300" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>03 - THE WALKTHROUGH</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="34" width="848" height="40">
+      <content textType="title" fontSize="28" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The journey map: the 8-node pipeline</p>
+      </content>
+    </shape>
+    <line startX="56" startY="76" endX="904" endY="76">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="64" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="64" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>1</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="64" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Validate</p>
+      </content>
+    </shape>
+    <line startX="154" startY="144" endX="174" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="178" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="178" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>2</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="178" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Idempotency</p>
+      </content>
+    </shape>
+    <line startX="268" startY="144" endX="288" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="292" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="292" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>3</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="292" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Assemble</p>
+      </content>
+    </shape>
+    <line startX="382" startY="144" endX="402" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="406" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="406" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>4</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="406" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Create</p>
+      </content>
+    </shape>
+    <line startX="496" startY="144" endX="516" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="520" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>5</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Invoke</p>
+      </content>
+    </shape>
+    <line startX="610" startY="144" endX="630" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="634" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="634" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>6</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="634" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Parse</p>
+      </content>
+    </shape>
+    <line startX="724" startY="144" endX="744" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="748" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="748" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>7</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="748" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Update</p>
+      </content>
+    </shape>
+    <line startX="838" startY="144" endX="858" endY="144">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="862" topLeftY="120" width="90" height="48">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <border color="rgb(15, 36, 64)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="862" topLeftY="126" width="90" height="18">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" bold="true" color="rgba(39,121,167,1)" textAlign="center" wrap="false">
+        <p>8</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="862" topLeftY="144" width="90" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Audit</p>
+      </content>
+    </shape>
+    <line startX="56" startY="196" endX="904" endY="196">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="216" width="6" height="24">
+      <fill>
+        <fillColor color="rgba(234,102,104,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="78" topLeftY="214" width="826" height="26">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>Stop 1 fails - 400, structured errors. The bank is never called.</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="56" topLeftY="252" width="6" height="24">
+      <fill>
+        <fillColor color="rgba(250,173,20,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="78" topLeftY="250" width="826" height="26">
+      <content textType="body" fontSize="14" fontFamily="Inter" color="rgba(61,74,92,1)" wrap="false" textAlign="left">
+        <p>Stop 2 is a replay - we return the stored result and the chain ends before the bank.</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="56" topLeftY="318" width="848" height="52">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <border color="rgb(39, 121, 167)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="334" width="816" height="24">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>PaymentProcessContext - the only mutable state: request, stored payment, bank response, outcome, auth code</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="400" width="848" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>I will walk these stops in order - that is the order the code runs.</p>
+        <p>Each stop is one class with one job; the class name is on its slide.</p>
+        <p>Watch for two guarantees that come from the ordering, not from any single node.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>06 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Here is the map I will follow for the rest of the walkthrough. One request moves through eight nodes: validate, check idempotency, assemble the bank request, create the payment record, invoke the bank, parse its response, update the record, then audit. Two exits matter: validation failure returns 400 before the bank is ever called, and an idempotency replay returns the stored result and ends the chain. All mutable state lives in one context object, so the nodes themselves can be stateless singletons.</p>
+    </content>
+  </note>
+</slide>

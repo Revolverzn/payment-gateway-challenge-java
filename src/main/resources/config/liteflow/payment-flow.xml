@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow>
+    <!-- Payment processing pipeline:
+         validatePayment -> checkIdempotency -> assembleBankRequest
+         -> createPaymentOrder (INIT, local write-ahead, pre-bank) -> invokeBank
+         -> parseBankResponse -> updatePaymentOrder (terminal status)
+         -> auditPayment (terminal guard + audit log + metric) -->
+    <chain name="paymentProcessChain">
+        THEN(
+             validatePayment,
+             checkIdempotency,
+             assembleBankRequest,
+             createPaymentOrder,
+             invokeBank,
+             parseBankResponse,
+             updatePaymentOrder,
+             auditPayment
+        );
+    </chain>
+</flow>

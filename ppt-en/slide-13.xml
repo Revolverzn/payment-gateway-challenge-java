@@ -1,0 +1,68 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 7 / 11 - CREATE THE PAYMENT RECORD</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Create order: save first, call the bank second</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>Payment payment = Payment.builder()</p>
+        <p>    .id(idempotencyKey)  // key == primary key</p>
+        <p>    .requestAmount(request.getAmount())</p>
+        <p>    .requestCurrency(request.getCurrency())</p>
+        <p>    .requestCardLastFour(lastFour(request))</p>
+        <p>    .status(PaymentStatus.INIT)</p>
+        <p>    .build();</p>
+        <p>paymentsRepository.add(payment);</p>
+        <p>// atomic insert: two concurrent duplicates</p>
+        <p>// race on one unique key - the second loses</p>
+        <p>// cleanly, no lock, no retry loop</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>Write-ahead: the record exists before the bank call - the request is never lost.</p></li>
+          <li><p>Key as primary key: duplicates fail the atomic add - exactly-once without locks.</p></li>
+          <li><p>INIT means "result unknown" - the honest trace a 503 leaves behind.</p></li>
+          <li><p>INIT is a reconciliation hook, never a customer-visible state.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: we never lose the fact that a request happened - the basis for reconciliation and support.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>13 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Stop seven is deliberately placed before the bank call: we save first, then call. The record starts in status INIT - meaning the result is unknown, which is exactly the state a timeout leaves behind. Because the idempotency key is also the primary key, two concurrent duplicates race on one atomic insert and the second one loses cleanly - no locks, no retry loops. Write-ahead is what makes reconciliation and support possible later.</p>
+    </content>
+  </note>
+</slide>

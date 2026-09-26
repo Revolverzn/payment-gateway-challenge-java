@@ -1,0 +1,70 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 6 / 11 - ASSEMBLE THE BANK REQUEST</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Assemble: the bank's format stays in the bank's corner</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>BankPaymentRequest bankRequest =</p>
+        <p>    BankPaymentRequest.builder()</p>
+        <p>      .cardNumber(request.getCardNumber())</p>
+        <p>      .expiryMonth(String.format("%02d",</p>
+        <p>          request.getExpiryMonth()))</p>
+        <p>      .expiryYear(String.valueOf(</p>
+        <p>          request.getExpiryYear()))</p>
+        <p>      .amount(request.getAmount())</p>
+        <p>      .currency(request.getCurrency())</p>
+        <p>      .cvv(request.getCvv())</p>
+        <p>      .build();</p>
+        <p>// MM -&gt; MM/yyyy ; cvv stored as String</p>
+        <p>// toString() masks the PAN</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>Anti-Corruption Layer: the bank's wire format lives only in the client package.</p></li>
+          <li><p>One converter absorbs the differences - zero-padding, string cvv - in exactly one place.</p></li>
+          <li><p>toString() masks the PAN: even a debug log cannot leak card data.</p></li>
+          <li><p>Bank contract changes touch one file, not the codebase.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: the bank is the boundary we cannot change - so its quirks are quarantined, not spread.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>12 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Stop six is where we build the message the bank actually wants. I use a separate DTO for the bank request, and the conversion happens in one place - this is the Anti-Corruption Layer pattern. The bank wants the month zero-padded and the cvv as a string; those quirks are absorbed here and never leak into the rest of the code. And because BankPaymentRequest overrides toString to mask the card number, even a careless debug log cannot print a full PAN.</p>
+    </content>
+  </note>
+</slide>

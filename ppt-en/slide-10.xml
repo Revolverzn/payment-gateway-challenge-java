@@ -1,0 +1,70 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 4 / 11 - VALIDATION</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Validation: rules register themselves</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>public interface PaymentValidationRule {</p>
+        <p>  Set&lt;String&gt; validate(PostPaymentRequest request);</p>
+        <p>}</p>
+        <p>@Component</p>
+        <p>public class CardNumberValidationRule</p>
+        <p>    implements PaymentValidationRule {</p>
+        <p>  public Set&lt;String&gt; validate(PostPaymentRequest r) {</p>
+        <p>    // Luhn check, length, digits only</p>
+        <p>  }</p>
+        <p>}</p>
+        <p>// Spring injects every rule - adding one</p>
+        <p>// is simply adding a class</p>
+        <p>private final List&lt;PaymentValidationRule&gt; rules;</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>Strategy pattern: one check per class, self-registered by Spring - no registry to maintain.</p></li>
+          <li><p>All errors are collected, not fail-fast - one 400 instead of several round trips.</p></li>
+          <li><p>Pure functions: no side effects, no state - trivially unit-testable.</p></li>
+          <li><p>Open / Closed: a new rule touches nothing else.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: "Rejected" must be cheap, complete, and provable - this is the gate before the bank.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>10 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Stop four is validation, and it is the first gate. Every rule - card number, expiry, amount, currency - implements one interface and is discovered by Spring. That is the Strategy pattern doing real work: adding a new rule is literally adding a class, with no registry to update. Two behaviors I want to highlight: we collect all errors instead of stopping at the first, so the merchant gets one complete 400; and the rules are pure functions, which makes them the easiest code in the project to unit test.</p>
+    </content>
+  </note>
+</slide>

@@ -1,0 +1,73 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <style>
+    <fill>
+      <fillColor color="rgb(15, 36, 64)"/>
+    </fill>
+  </style>
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="120" width="848" height="64">
+      <content textType="title" fontSize="52" fontFamily="Inter" bold="true" color="rgba(255,255,255,1)" wrap="false" textAlign="left">
+        <p>Payment Gateway</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="192" width="848" height="40">
+      <content textType="body" fontSize="21" fontFamily="Inter" color="rgba(210,224,240,1)" wrap="false" textAlign="left">
+        <p>A walk through the code, in the order the code runs</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="244" width="848" height="32">
+      <content textType="body" fontSize="15" fontFamily="Inter" color="rgba(143,168,200,1)" wrap="false" textAlign="left">
+        <p>Senior Software Engineer II - Interview Exercise</p>
+      </content>
+    </shape>
+    <line startX="56" startY="300" endX="904" endY="300">
+      <border color="rgb(73, 197, 182)" width="3"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="344" width="118" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>Observability</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="182" topLeftY="344" width="146" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>Packaging / Hosting</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="336" topLeftY="344" width="184" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>Technical Documentation</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="528" topLeftY="344" width="104" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>API Design</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="640" topLeftY="344" width="112" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>Code Design</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="760" topLeftY="344" width="132" height="34">
+      <border color="rgba(210,224,240,0.45)" width="1"/>
+      <content textType="body" fontSize="12" fontFamily="Inter" color="rgba(201,218,240,1)" textAlign="center" wrap="false">
+        <p>Testing Mindset</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="470" width="848" height="30">
+      <content textType="caption" fontSize="13" fontFamily="Inter" color="rgba(143,168,200,1)" wrap="false" textAlign="left">
+        <p>Java 17 - Spring Boot 3.1.5 - LiteFlow - Springdoc - Mountebank (Docker) - JaCoCo + GitHub Actions - Sep 2026</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Good morning - thanks for having me. This is a payment gateway: the middle layer between a merchant and an acquiring bank. Over the next hour I will walk one payment request through the code, in the order the code actually runs, and at every stop I will tie the design back to a payments risk. Please interrupt me any time - the harder the question, the more I learn.</p>
+    </content>
+  </note>
+</slide>

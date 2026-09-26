@@ -12,4 +12,17 @@ services:
       - type: bind
         source: ./imposters
         target: /imposters
-      
+
+  # Optional: build and run the gateway together with the simulator.
+  # Not started by plain `docker-compose up` (simulator only, per the challenge
+  # setup); start both with: docker-compose --profile app up
+  payment_gateway:
+    profiles: ["app"]
+    build: .
+    container_name: payment_gateway
+    ports:
+      - "8090:8090"
+    depends_on:
+      - bank_simulator
+    environment:
+      BANK_SIMULATOR_URL: http://bank_simulator:8080/payments

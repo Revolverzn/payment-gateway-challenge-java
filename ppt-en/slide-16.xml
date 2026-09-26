@@ -1,0 +1,66 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 10 / 11 - FINALIZE THE RECORD</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Finalize: INIT to terminal, one writer</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>payment.updateStatus(status);</p>
+        <p>payment.setAuthorizationCode(authCode);</p>
+        <p>payment.setProcessedAt(now());</p>
+        <p>paymentsRepository.update(payment);</p>
+        <p>// terminal states only: Authorized, Declined</p>
+        <p>// this node imports nothing from the</p>
+        <p>// bank package - the domain stays clean</p>
+        <p>// authorizationCode is NON_NULL and is</p>
+        <p>// required only for Authorized</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="250">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>INIT moves to a terminal state - Authorized or Declined - exactly here.</p></li>
+          <li><p>Single writer: one node owns the terminal transition, so the state machine is readable.</p></li>
+          <li><p>The bank package is never imported here - the domain stays clean.</p></li>
+          <li><p>Authorized is the only state that requires an authorization code - enforced by Bean Validation.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: a record with a wrong terminal state is a silent support ticket - the invariant is enforced, not hoped for.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>16 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Stop ten writes the terminal state. The record that was created as INIT is updated to Authorized or Declined, with the auth code and a processed timestamp. I want to highlight three things: this node is the single writer of the terminal transition, so the state machine is easy to read; it does not import anything from the bank package, so our domain model stays clean; and the authorization code is required only for Authorized, and that invariant is enforced by validation, not by hope.</p>
+    </content>
+  </note>
+</slide>

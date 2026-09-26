@@ -1,0 +1,60 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>06 - SCOPE AND EVOLUTION</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>What I left out - and how it would grow</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="92" width="420" height="26">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Deliberately not built</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="136" width="420" height="300">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>No DB engine - in-memory repository: right for an exercise, wrong for production; the swap point is one interface.</p></li>
+          <li><p>No merchant authentication - out of scope, documented in SOLUTION.md.</p></li>
+          <li><p>No retry scheduler / reconciliation job - the state machine already leaves the hook: INIT plus the idempotency key.</p></li>
+          <li><p>No circuit breaker - one bank, one instance; timeouts already cap the damage.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <line startX="484" startY="92" endX="484" endY="470">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="520" topLeftY="92" width="384" height="26">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Evolution order in production</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="136" width="384" height="300">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ol>
+          <li><p>Tokenize card data, then move to real persistence - RDBMS with the same unique key.</p></li>
+          <li><p>Reconciliation job: sweep INIT records and ask the bank for late answers.</p></li>
+          <li><p>Circuit breaker plus scheduled retry with backoff.</p></li>
+          <li><p>Async via an event stream once consumers exist - the context pattern survives the move.</p></li>
+        </ol>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>23 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Equally important as what I built is what I did not, and why. There is no database engine - the repository is in-memory, which is correct for this exercise; in production, persistence is the first swap, and the interface already isolates it. No merchant authentication, no retry scheduler, no circuit breaker - each is documented as out of scope or unnecessary at this size. And I keep the evolution path explicit: tokenization first, then reconciliation over INIT records, then circuit breaking, then async once there are consumers.</p>
+    </content>
+  </note>
+</slide>

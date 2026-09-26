@@ -1,0 +1,68 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>STOP 1 / 11 - THE API BOUNDARY</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Controller: least code, most documentation</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="56" topLeftY="84" width="532" height="384">
+      <fill>
+        <fillColor color="rgba(247,249,251,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="72" topLeftY="100" width="504" height="352">
+      <content textType="body" fontSize="11" fontFamily="Roboto Mono" color="rgba(61,74,92,1)" lineSpacing="multiple:1.32" textAlign="left">
+        <p>@PostMapping("/payments")</p>
+        <p>@ResponseStatus(HttpStatus.CREATED)</p>
+        <p>public PostPaymentResponse postPayments(</p>
+        <p>    @Valid @RequestBody PostPaymentRequest request,</p>
+        <p>    @RequestHeader(value = "Idempotency-Key",</p>
+        <p>                    required = false) String idempotencyKey) {</p>
+        <p>    return paymentGatewayService.processPayment(</p>
+        <p>        request, idempotencyKey);</p>
+        <p>}</p>
+        <p>// @ApiResponses: 201 / 400 / 409 / 502 / 503</p>
+        <p>// GET /payment/{id} : 200 / 400 / 404</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="604" topLeftY="92" width="300" height="240">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>Translates HTTP to a service call - no business logic lives here.</p></li>
+          <li><p>Declined still returns 201; the body carries the business status.</p></li>
+          <li><p>Swagger annotations live here, so docs cannot drift from the contract.</p></li>
+          <li><p>One endpoint per operation, explicit statuses - the API is readable at a glance.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="604" topLeftY="360" width="300" height="108">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="616" topLeftY="374" width="276" height="84">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(15,36,64,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Why it matters: the public contract is the most expensive thing to change - so we keep it tiny, explicit, and documented.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>07 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>The request first hits the controller, and I kept it deliberately thin. It takes the body and an optional idempotency header, calls the service, and that is it. Notice Declined is still a 201 - HTTP success means we processed the request; the business answer is in the body. The Swagger annotations live on this class, so the generated documentation cannot drift from the actual contract.</p>
+    </content>
+  </note>
+</slide>

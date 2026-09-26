@@ -1,0 +1,2566 @@
+<presentation id="L2igsYhUalu0Mmd5W2ic8FCfnwf" xmlns="https://www.larkoffice.com/sml/2.0" width="960" height="540">
+  <title>Payment Gateway - Solution Walkthrough</title>
+  <theme>
+    <textStyles>
+      <headline fontColor="rgba(31, 35, 41, 1)"/>
+      <sub-headline fontColor="rgba(31, 35, 41, 1)"/>
+      <body fontColor="rgba(31, 35, 41, 1)"/>
+      <caption fontColor="rgba(155, 158, 162, 1)" fontSize="14"/>
+    </textStyles>
+  </theme>
+  <slide id="puu">
+    <style>
+      <fill id="fuu">
+        <fillColor color="rgba(15, 36, 64, 1)"/>
+      </fill>
+    </style>
+    <data>
+      <shape width="848" height="64" topLeftX="56" topLeftY="120" type="text" id="bFI">
+        <content textType="title" fontSize="52" fontFamily="Inter" color="rgba(255, 255, 255, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Payment Gateway</p>
+        </content>
+      </shape>
+      <shape width="848" height="40" topLeftX="56" topLeftY="192" type="text" id="bFs">
+        <content fontSize="21" fontFamily="Inter" color="rgba(210, 224, 240, 1)" textAlign="left" wrap="false">
+          <p>A walk through the code, in the order the code runs</p>
+        </content>
+      </shape>
+      <shape width="848" height="32" topLeftX="56" topLeftY="244" type="text" id="bFH">
+        <content fontSize="15" fontFamily="Inter" color="rgba(143, 168, 200, 1)" textAlign="left" wrap="false">
+          <p>Senior Software Engineer II - Interview Exercise</p>
+        </content>
+      </shape>
+      <line id="bFS" startX="56" startY="300" endX="904.0005896224365" endY="300">
+        <border color="rgba(73, 197, 182, 1)" width="3"/>
+      </line>
+      <shape width="118" height="34" topLeftX="56" topLeftY="344" type="text" id="bFW">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>Observability</p>
+        </content>
+      </shape>
+      <shape width="146" height="34" topLeftX="182" topLeftY="344" type="text" id="bFP">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>Packaging / Hosting</p>
+        </content>
+      </shape>
+      <shape width="184" height="34" topLeftX="336" topLeftY="344" type="text" id="bFf">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>Technical Documentation</p>
+        </content>
+      </shape>
+      <shape width="104" height="34" topLeftX="528" topLeftY="344" type="text" id="bFd">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>API Design</p>
+        </content>
+      </shape>
+      <shape width="112" height="34" topLeftX="640" topLeftY="344" type="text" id="bFK">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>Code Design</p>
+        </content>
+      </shape>
+      <shape width="132" height="34" topLeftX="760" topLeftY="344" type="text" id="bFY">
+        <border color="rgba(210, 224, 240, 0.45)"/>
+        <content fontSize="12" fontFamily="Inter" color="rgba(201, 218, 240, 1)" textAlign="center" wrap="false">
+          <p>Testing Mindset</p>
+        </content>
+      </shape>
+      <shape width="848" height="30" topLeftX="56" topLeftY="470" type="text" id="bFB">
+        <content textType="caption" fontSize="13" fontFamily="Inter" color="rgba(143, 168, 200, 1)" textAlign="left" wrap="false">
+          <p>Java 17 - Spring Boot 3.1.5 - LiteFlow - Springdoc - Mountebank (Docker) - JaCoCo + GitHub Actions - Sep 2026</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bFF">
+      <content>
+        <p>Good morning - thanks for having me. This is a payment gateway: the middle layer between a merchant and an acquiring bank. Over the next hour I will walk one payment request through the code, in the order the code actually runs, and at every stop I will tie the design back to a payments risk. Please interrupt me any time - the harder the question, the more I learn.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puk">
+    <style/>
+    <data>
+      <shape width="300" height="20" topLeftX="56" topLeftY="10" type="text" id="bFM">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>AGENDA</p>
+        </content>
+      </shape>
+      <shape width="848" height="44" topLeftX="56" topLeftY="34" type="text" id="bFi">
+        <content textType="title" fontSize="28" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>How this hour runs</p>
+        </content>
+      </shape>
+      <line id="bFa" startX="56" startY="76" endX="904.0005896224365" endY="76">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="60" height="34" topLeftX="56" topLeftY="108" type="text" id="bFw">
+        <content fontSize="20" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>01</p>
+        </content>
+      </shape>
+      <shape width="312" height="28" topLeftX="128" topLeftY="112" type="text" id="bFR">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>The system in one picture</p>
+        </content>
+      </shape>
+      <line id="bFl" startX="56" startY="152" endX="440.0013020811257" endY="152">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="34" topLeftX="56" topLeftY="168" type="text" id="bFE">
+        <content fontSize="20" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>02</p>
+        </content>
+      </shape>
+      <shape width="312" height="28" topLeftX="128" topLeftY="172" type="text" id="bFr">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>The contract: two endpoints</p>
+        </content>
+      </shape>
+      <line id="bFc" startX="56" startY="212" endX="440.0013020811257" endY="212">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="34" topLeftX="56" topLeftY="228" type="text" id="bFt">
+        <content fontSize="20" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>03</p>
+        </content>
+      </shape>
+      <shape width="312" height="56" topLeftX="128" topLeftY="232" type="text" id="bFG">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>One request through the code - 8 stops</p>
+        </content>
+      </shape>
+      <line id="bFU" startX="56" startY="300" endX="440.0013020811257" endY="300">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="34" topLeftX="56" topLeftY="316" type="text" id="bFp">
+        <content fontSize="20" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>04</p>
+        </content>
+      </shape>
+      <shape width="312" height="56" topLeftX="128" topLeftY="320" type="text" id="bFn">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>Errors, security, observability</p>
+        </content>
+      </shape>
+      <line id="bFT" startX="56" startY="388" endX="440.0013020811257" endY="388">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="34" topLeftX="56" topLeftY="404" type="text" id="bFz">
+        <content fontSize="20" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>05</p>
+        </content>
+      </shape>
+      <shape width="312" height="56" topLeftX="128" topLeftY="408" type="text" id="bFO">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>Packaging, docs, testing, scope</p>
+        </content>
+      </shape>
+      <line id="bFv" startX="484.00000000000006" startY="108" endX="484.00000000000006" endY="480.0013440835933">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="384" height="32" topLeftX="520" topLeftY="108" type="text" id="bFo">
+        <content fontSize="18" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The rules of the hour</p>
+        </content>
+      </shape>
+      <shape width="384" height="300" topLeftX="520" topLeftY="156" type="text" id="bFA">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>I lead the walkthrough - jump in any time.</p>
+            </li>
+            <li>
+              <p>Every design choice is tied to a payments risk.</p>
+            </li>
+            <li>
+              <p>The five competencies: Observability, Packaging / Hosting, Technical Documentation, API Design, Code Design, Testing Mindset.</p>
+            </li>
+            <li>
+              <p>Probe as hard as you like - this exercise is built to be argued with.</p>
+            </li>
+            <li>
+              <p>If a trade-off looks wrong to you, I will tell you what I gave up and why.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="384" height="44" topLeftX="520" topLeftY="440" type="text" id="bFj">
+        <content fontSize="14" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>Goal: every guarantee traces to a line of code.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bFN">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>02 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bFX">
+      <content>
+        <p>Here is the shape of the hour. First I put the gateway in its world - shopper, merchant, gateway, bank. Then the two endpoints we expose. Then the main event: one payment request walked through eight stops in the order the code runs. After that I cover the cross-cutting concerns - errors, security, observability - then packaging, documentation and testing. Feel free to interrupt at any point; this is a conversation, not a lecture.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pur">
+    <style/>
+    <data>
+      <shape width="300" height="20" topLeftX="56" topLeftY="10" type="text" id="bFV">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>01 - THE SYSTEM</p>
+        </content>
+      </shape>
+      <shape width="848" height="40" topLeftX="56" topLeftY="34" type="text" id="bFD">
+        <content textType="title" fontSize="28" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Where the gateway sits</p>
+        </content>
+      </shape>
+      <line id="bPd" startX="56" startY="76" endX="904.0005896224365" endY="76">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="150" height="64" topLeftX="56" topLeftY="120" presetHandlers="0" type="rect" id="bPr">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="150" height="22" topLeftX="56" topLeftY="142" type="text" id="bFu">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Shopper</p>
+        </content>
+      </shape>
+      <line id="bFb" startX="206" startY="152" endX="248.0119030752" endY="152">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="170" height="64" topLeftX="252" topLeftY="120" presetHandlers="0" type="rect" id="bPs">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="170" height="22" topLeftX="252" topLeftY="142" type="text" id="bPB">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Merchant</p>
+        </content>
+      </shape>
+      <line id="bPi" startX="422" startY="152" endX="468.01086828130934" endY="152">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="180" height="64" topLeftX="472" topLeftY="120" presetHandlers="0" type="rect" id="bFL">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <border color="rgba(39, 121, 167, 1)"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="180" height="22" topLeftX="472" topLeftY="142" type="text" id="bFh">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Payment Gateway</p>
+        </content>
+      </shape>
+      <line id="bPf" startX="652" startY="152" endX="698.0108682813094" endY="152">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="170" height="64" topLeftX="702" topLeftY="120" presetHandlers="0" type="rect" id="bPW">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="170" height="22" topLeftX="702" topLeftY="142" type="text" id="bFy">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Acquiring Bank</p>
+        </content>
+      </shape>
+      <shape width="848" height="24" topLeftX="56" topLeftY="196" type="text" id="bFC">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>The bank is simulated by Mountebank in Docker - the challenge provides it; we must integrate with it as-is.</p>
+        </content>
+      </shape>
+      <shape width="848" height="28" topLeftX="56" topLeftY="240" type="text" id="bPI">
+        <content fontSize="17" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The gateway never decides the outcome - the bank does.</p>
+        </content>
+      </shape>
+      <line id="bPY" startX="56" startY="284" endX="904.0005896224365" endY="284">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="12" height="12" topLeftX="56" topLeftY="308" type="ellipse" id="bFZ">
+        <fill>
+          <fillColor color="rgba(73, 197, 182, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="200" height="26" topLeftX="84" topLeftY="300" type="text" id="bFJ">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Authorized</p>
+        </content>
+      </shape>
+      <shape width="520" height="26" topLeftX="296" topLeftY="302" type="text" id="bPP">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Bank says yes. We store the outcome and return it to the merchant.</p>
+        </content>
+      </shape>
+      <shape width="84" height="26" topLeftX="820" topLeftY="300" type="text" id="bPS">
+        <content fontSize="14" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="right" wrap="false">
+          <p>201</p>
+        </content>
+      </shape>
+      <line id="bFx" startX="56" startY="344" endX="904.0005896224365" endY="344">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="12" height="12" topLeftX="56" topLeftY="368" type="ellipse" id="bFe">
+        <fill>
+          <fillColor color="rgba(250, 173, 20, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="200" height="26" topLeftX="84" topLeftY="360" type="text" id="bPF">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Declined</p>
+        </content>
+      </shape>
+      <shape width="520" height="26" topLeftX="296" topLeftY="362" type="text" id="bPK">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Bank says no. Same HTTP contract - a different business answer.</p>
+        </content>
+      </shape>
+      <shape width="84" height="26" topLeftX="820" topLeftY="360" type="text" id="bFg">
+        <content fontSize="14" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="right" wrap="false">
+          <p>201</p>
+        </content>
+      </shape>
+      <line id="bFk" startX="56" startY="404" endX="904.0005896224365" endY="404">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="12" height="12" topLeftX="56" topLeftY="428" type="ellipse" id="bFm">
+        <fill>
+          <fillColor color="rgba(234, 102, 104, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="200" height="26" topLeftX="84" topLeftY="420" type="text" id="bPo">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Rejected</p>
+        </content>
+      </shape>
+      <shape width="520" height="26" topLeftX="296" topLeftY="422" type="text" id="bFq">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Gateway rejects invalid input. The bank is never called.</p>
+        </content>
+      </shape>
+      <shape width="84" height="26" topLeftX="820" topLeftY="420" type="text" id="bFQ">
+        <content fontSize="14" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="right" wrap="false">
+          <p>400</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bPH">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>03 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bPn">
+      <content>
+        <p>Before any code, the world it lives in. A shopper buys from a merchant; the merchant sends the card details to our gateway; the gateway forwards the request to an acquiring bank and stores the result. The bank in this exercise is a Mountebank simulator in Docker, provided by the challenge - we integrate with it as-is. The key mental model: we do not decide yes or no. The bank does. We are the reliable, honest messenger in the middle.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puU">
+    <style/>
+    <data>
+      <shape width="300" height="20" topLeftX="56" topLeftY="10" type="text" id="bPT">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>02 - THE CONTRACT</p>
+        </content>
+      </shape>
+      <shape width="848" height="40" topLeftX="56" topLeftY="34" type="text" id="bPO">
+        <content textType="title" fontSize="28" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The contract: two endpoints</p>
+        </content>
+      </shape>
+      <line id="bPp" startX="56" startY="76" endX="904.0005896224365" endY="76">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="72" height="30" topLeftX="56" topLeftY="104" presetHandlers="0" type="rect" id="bPq">
+        <fill>
+          <fillColor color="rgba(15, 36, 64, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="72" height="20" topLeftX="56" topLeftY="110" type="text" id="bPA">
+        <content fontSize="13" fontFamily="Roboto Mono" color="rgba(255, 255, 255, 1)" bold="true" textAlign="center" wrap="false">
+          <p>POST</p>
+        </content>
+      </shape>
+      <shape width="280" height="26" topLeftX="144" topLeftY="108" type="text" id="bPN">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>/payments</p>
+        </content>
+      </shape>
+      <shape width="420" height="24" topLeftX="56" topLeftY="146" type="text" id="bPg">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Process a card payment, store the outcome.</p>
+        </content>
+      </shape>
+      <shape width="140" height="22" topLeftX="56" topLeftY="184" type="text" id="bPk">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Request body</p>
+        </content>
+      </shape>
+      <shape width="240" height="96" topLeftX="56" topLeftY="210" type="text" id="bPa">
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.25" textAlign="left">
+          <p>card_number</p>
+          <p>expiry_month, expiry_year</p>
+          <p>currency (max 3, as required)</p>
+          <p>amount</p>
+          <p>cvv</p>
+        </content>
+      </shape>
+      <shape width="420" height="24" topLeftX="56" topLeftY="316" type="text" id="bPR">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Optional header: Idempotency-Key</p>
+        </content>
+      </shape>
+      <shape width="420" height="44" topLeftX="56" topLeftY="348" type="text" id="bPM">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>Declined still returns 201 - the status lives in the body.</p>
+        </content>
+      </shape>
+      <shape width="120" height="24" topLeftX="56" topLeftY="404" type="text" id="bPu">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Status codes</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="56" topLeftY="434" type="text" id="bPc">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>201</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="116" topLeftY="434" type="text" id="bPG">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>400</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="176" topLeftY="434" type="text" id="bPE">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>409</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="236" topLeftY="434" type="text" id="bPV">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>502</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="296" topLeftY="434" type="text" id="bPz">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>503</p>
+        </content>
+      </shape>
+      <line id="bPU" startX="484" startY="104" endX="484" endY="470.001366117669">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="72" height="30" topLeftX="520" topLeftY="104" presetHandlers="0" type="rect" id="bPy">
+        <fill>
+          <fillColor color="rgba(39, 121, 167, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="72" height="20" topLeftX="520" topLeftY="110" type="text" id="bPj">
+        <content fontSize="13" fontFamily="Roboto Mono" color="rgba(255, 255, 255, 1)" bold="true" textAlign="center" wrap="false">
+          <p>GET</p>
+        </content>
+      </shape>
+      <shape width="280" height="26" topLeftX="608" topLeftY="108" type="text" id="bPv">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>/payment/{id}</p>
+        </content>
+      </shape>
+      <shape width="384" height="24" topLeftX="520" topLeftY="146" type="text" id="bPL">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Retrieve a previously stored payment.</p>
+        </content>
+      </shape>
+      <shape width="384" height="64" topLeftX="520" topLeftY="184" type="text" id="bPC">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.3" textAlign="left">
+          <p>Returns the stored record: status, card last four digits, amount, currency, timestamps.</p>
+          <p>Card number and cvv are never returned.</p>
+        </content>
+      </shape>
+      <shape width="120" height="24" topLeftX="520" topLeftY="316" type="text" id="bPw">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Status codes</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="520" topLeftY="348" type="text" id="bPX">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>200</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="580" topLeftY="348" type="text" id="bPx">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>400</p>
+        </content>
+      </shape>
+      <shape width="52" height="26" topLeftX="640" topLeftY="348" type="text" id="bPh">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>404</p>
+        </content>
+      </shape>
+      <shape width="384" height="64" topLeftX="520" topLeftY="404" type="text" id="bPt">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.3" textAlign="left">
+          <p>404 on unknown id: we do not confirm which payment ids exist.</p>
+          <p>No card data is stored unencrypted - more on security later.</p>
+        </content>
+      </shape>
+      <shape width="848" height="26" topLeftX="56" topLeftY="472" presetHandlers="0" type="rect" id="bPl">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="824" height="20" topLeftX="68" topLeftY="476" type="text" id="bPZ">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" textAlign="left" wrap="false">
+          <p>Swagger UI: /swagger-ui/index.html - docs generated from annotations, so they cannot drift from the code.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bPe">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>04 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bPJ">
+      <content>
+        <p>The whole public surface is two endpoints. POST /payments takes the card data and returns the outcome; GET /payment/{id} lets the merchant look a past payment back up. A subtle design point: Authorized and Declined both come back as 201 - HTTP success means we processed the request, and the business answer is a field in the body. Only Rejected, where we refuse to even try, is a 400. The full contract is generated into Swagger UI from the controller annotations, so the documentation cannot drift from the code.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puH">
+    <style/>
+    <data>
+      <shape width="300" height="20" topLeftX="56" topLeftY="10" type="text" id="bPb">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>01 - THE SYSTEM</p>
+        </content>
+      </shape>
+      <shape width="848" height="40" topLeftX="56" topLeftY="34" type="text" id="bIF">
+        <content textType="title" fontSize="28" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Architecture at a glance</p>
+        </content>
+      </shape>
+      <line id="bIs" startX="56" startY="76" endX="904.0005896224365" endY="76">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="480" height="44" topLeftX="240" topLeftY="104" presetHandlers="0" type="rect" id="bIS">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <border color="rgba(39, 121, 167, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="480" height="22" topLeftX="240" topLeftY="117" type="text" id="bIi">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Controller - translates HTTP, nothing else</p>
+        </content>
+      </shape>
+      <shape width="168" height="22" topLeftX="736" topLeftY="117" type="text" id="bIa">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>controller</p>
+        </content>
+      </shape>
+      <line id="bIt" startX="240.00000000000003" startY="148" endX="240.00000000000003" endY="166.02775637731995">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="480" height="44" topLeftX="240" topLeftY="166" presetHandlers="0" type="rect" id="bPD">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="480" height="22" topLeftX="240" topLeftY="179" type="text" id="bIP">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Service - one context per request</p>
+        </content>
+      </shape>
+      <shape width="168" height="22" topLeftX="736" topLeftY="179" type="text" id="bId">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>service</p>
+        </content>
+      </shape>
+      <line id="bIY" startX="240" startY="210" endX="240" endY="228.02775637731995">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="480" height="44" topLeftX="240" topLeftY="228" presetHandlers="0" type="rect" id="bIr">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="480" height="22" topLeftX="240" topLeftY="241" type="text" id="bIc">
+        <content fontSize="15" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Flow - 8 nodes, stateless singletons</p>
+        </content>
+      </shape>
+      <shape width="168" height="22" topLeftX="736" topLeftY="241" type="text" id="bIz">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>flow + flow.node</p>
+        </content>
+      </shape>
+      <line id="bPQ" startX="240" startY="272" endX="240" endY="290.0277563773199">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="150" height="44" topLeftX="240" topLeftY="290" presetHandlers="0" type="rect" id="bII">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="150" height="22" topLeftX="240" topLeftY="303" type="text" id="bIH">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Validation rules</p>
+        </content>
+      </shape>
+      <shape width="150" height="44" topLeftX="405" topLeftY="290" presetHandlers="0" type="rect" id="bIW">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="150" height="22" topLeftX="405" topLeftY="303" type="text" id="bIn">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Bank client</p>
+        </content>
+      </shape>
+      <shape width="150" height="44" topLeftX="570" topLeftY="290" presetHandlers="0" type="rect" id="bIT">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="150" height="22" topLeftX="570" topLeftY="303" type="text" id="bPm">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Repository</p>
+        </content>
+      </shape>
+      <shape width="174" height="22" topLeftX="730" topLeftY="303" type="text" id="bIf">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>validation, client, repo</p>
+        </content>
+      </shape>
+      <line id="bIK" startX="56" startY="372" endX="904.0005896224365" endY="372">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="848" height="22" topLeftX="56" topLeftY="392" type="text" id="bIB">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Each layer depends only on the one below it - dependencies point down, never up.</p>
+        </content>
+      </shape>
+      <shape width="848" height="66" topLeftX="56" topLeftY="424" type="text" id="bIo">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Stateless singletons + a request-scoped context means safe concurrency without locks.</p>
+          <p>One place per concern: the pipeline owns ordering, rules own validation, the client owns the bank format.</p>
+          <p>Adding a step or a rule never touches the controller or the service.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bIA">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>05 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bIw">
+      <content>
+        <p>This is the shape of the whole codebase. The controller is deliberately thin - it translates HTTP into a call and back. The service creates one context per request and hands it to a pipeline of eight small nodes. The nodes are stateless singletons, so they can be shared across all requests safely; all mutable data lives in the context. Below the pipeline sit three helpers: validation rules, the bank client, and the repository. Dependencies point downward - each layer only knows the one beneath it.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puW">
+    <style/>
+    <data>
+      <shape width="300" height="20" topLeftX="56" topLeftY="10" type="text" id="bKh">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>03 - THE WALKTHROUGH</p>
+        </content>
+      </shape>
+      <shape width="848" height="40" topLeftX="56" topLeftY="34" type="text" id="bSF">
+        <content textType="title" fontSize="28" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The journey map: the 8-node pipeline</p>
+        </content>
+      </shape>
+      <line id="bSS" startX="56" startY="76" endX="904.0005896224365" endY="76">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="90" height="48" topLeftX="64" topLeftY="120" presetHandlers="0" type="rect" id="bSa">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="64" topLeftY="126" type="text" id="bSR">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>1</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="64" topLeftY="144" type="text" id="bSM">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Validate</p>
+        </content>
+      </shape>
+      <line id="bKC" startX="154" startY="144" endX="174.0249843945008" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="178" topLeftY="120" presetHandlers="0" type="rect" id="bSf">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="178" topLeftY="126" type="text" id="bSB">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>2</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="178" topLeftY="144" type="text" id="bSA">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Idempotency</p>
+        </content>
+      </shape>
+      <line id="bSN" startX="268" startY="144" endX="288.0249843945008" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="292" topLeftY="120" presetHandlers="0" type="rect" id="bKD">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="292" topLeftY="126" type="text" id="bSI">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>3</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="292" topLeftY="144" type="text" id="bSW">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Assemble</p>
+        </content>
+      </shape>
+      <line id="bST" startX="382" startY="144" endX="402.0249843945008" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="406" topLeftY="120" presetHandlers="0" type="rect" id="bSO">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="406" topLeftY="126" type="text" id="bSp">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>4</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="406" topLeftY="144" type="text" id="bKb">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Create</p>
+        </content>
+      </shape>
+      <line id="bSd" startX="496" startY="144" endX="516.0249843945007" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="520" topLeftY="120" presetHandlers="0" type="rect" id="bSr">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="520" topLeftY="126" type="text" id="bSt">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>5</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="520" topLeftY="144" type="text" id="bSl">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Invoke</p>
+        </content>
+      </shape>
+      <line id="bKm" startX="610" startY="144" endX="630.0249843945007" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="634" topLeftY="120" presetHandlers="0" type="rect" id="bSs">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="634" topLeftY="126" type="text" id="bSi">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>6</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="634" topLeftY="144" type="text" id="bSw">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Parse</p>
+        </content>
+      </shape>
+      <line id="bSX" startX="724" startY="144" endX="744.0249843945007" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="748" topLeftY="120" presetHandlers="0" type="rect" id="bKQ">
+        <fill>
+          <fillColor color="rgba(255, 255, 255, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="748" topLeftY="126" type="text" id="bSK">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>7</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="748" topLeftY="144" type="text" id="bSo">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Update</p>
+        </content>
+      </shape>
+      <line id="bSj" startX="838" startY="144" endX="858.0249843945007" endY="144">
+        <border color="rgba(39, 121, 167, 1)"/>
+        <endArrow type="arrow"/>
+      </line>
+      <shape width="90" height="48" topLeftX="862" topLeftY="120" presetHandlers="0" type="rect" id="bSv">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <border color="rgba(15, 36, 64, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="90" height="18" topLeftX="862" topLeftY="126" type="text" id="bKJ">
+        <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="center" wrap="false">
+          <p>8</p>
+        </content>
+      </shape>
+      <shape width="90" height="20" topLeftX="862" topLeftY="144" type="text" id="bSH">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="center" wrap="false">
+          <p>Audit</p>
+        </content>
+      </shape>
+      <line id="bSn" startX="56" startY="196" endX="904.0005896224365" endY="196">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="6" height="24" topLeftX="56" topLeftY="216" presetHandlers="0" type="rect" id="bSz">
+        <fill>
+          <fillColor color="rgba(234, 102, 104, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="826" height="26" topLeftX="78" topLeftY="214" type="text" id="bSU">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Stop 1 fails - 400, structured errors. The bank is never called.</p>
+        </content>
+      </shape>
+      <shape width="6" height="24" topLeftX="56" topLeftY="252" presetHandlers="0" type="rect" id="bKe">
+        <fill>
+          <fillColor color="rgba(250, 173, 20, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="826" height="26" topLeftX="78" topLeftY="250" type="text" id="bSP">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Stop 2 is a replay - we return the stored result and the chain ends before the bank.</p>
+        </content>
+      </shape>
+      <shape width="848" height="52" topLeftX="56" topLeftY="318" presetHandlers="0" type="rect" id="bSY">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <border color="rgba(39, 121, 167, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="816" height="24" topLeftX="72" topLeftY="334" type="text" id="bSc">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>PaymentProcessContext - the only mutable state: request, stored payment, bank response, outcome, auth code</p>
+        </content>
+      </shape>
+      <shape width="848" height="84" topLeftX="56" topLeftY="400" type="text" id="bSG">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>I will walk these stops in order - that is the order the code runs.</p>
+          <p>Each stop is one class with one job; the class name is on its slide.</p>
+          <p>Watch for two guarantees that come from the ordering, not from any single node.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bSE">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>06 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bfw">
+      <content>
+        <p>Here is the map I will follow for the rest of the walkthrough. One request moves through eight nodes: validate, check idempotency, assemble the bank request, create the payment record, invoke the bank, parse its response, update the record, then audit. Two exits matter: validation failure returns 400 before the bank is ever called, and an idempotency replay returns the stored result and ends the chain. All mutable state lives in one context object, so the nodes themselves can be stateless singletons.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pus">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bKg">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 1 / 11 - THE API BOUNDARY</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bKZ">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Controller: least code, most documentation</p>
+        </content>
+      </shape>
+      <line id="bKL" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bKV">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bKk">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>@PostMapping(&quot;/payments&quot;)</p>
+          <p>@ResponseStatus(HttpStatus.CREATED)</p>
+          <p>public PostPaymentResponse postPayments(</p>
+          <p>@Valid @RequestBody PostPaymentRequest request,</p>
+          <p>@RequestHeader(value = &quot;Idempotency-Key&quot;,</p>
+          <p>required = false) String idempotencyKey) {</p>
+          <p>return paymentGatewayService.processPayment(</p>
+          <p>request, idempotencyKey);</p>
+          <p>}</p>
+          <p>// @ApiResponses: 201 / 400 / 409 / 502 / 503</p>
+          <p>// GET /payment/{id} : 200 / 400 / 404</p>
+        </content>
+      </shape>
+      <shape width="300" height="240" topLeftX="604" topLeftY="92" type="text" id="bKx">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Translates HTTP to a service call - no business logic lives here.</p>
+            </li>
+            <li>
+              <p>Declined still returns 201; the body carries the business status.</p>
+            </li>
+            <li>
+              <p>Swagger annotations live here, so docs cannot drift from the contract.</p>
+            </li>
+            <li>
+              <p>One endpoint per operation, explicit statuses - the API is readable at a glance.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bKy">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bKu">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: the public contract is the most expensive thing to change - so we keep it tiny, explicit, and documented.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bKq">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>07 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bIj">
+      <content>
+        <p>The request first hits the controller, and I kept it deliberately thin. It takes the body and an optional idempotency header, calls the service, and that is it. Notice Declined is still a 201 - HTTP success means we processed the request; the business answer is in the body. The Swagger annotations live on this class, so the generated documentation cannot drift from the actual contract.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pup">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bSV">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 2 / 11 - THE SERVICE</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bSk">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Service: state in the context, nodes stay stateless</p>
+        </content>
+      </shape>
+      <line id="bSg" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bSZ">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bSL">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>public PostPaymentResponse processPayment(</p>
+          <p>PostPaymentRequest request, String idempotencyKey) {</p>
+          <p>PaymentProcessContext context =</p>
+          <p>new PaymentProcessContext(request, idempotencyKey);</p>
+          <p>return chain.execute2Resp(&quot;payment_process&quot;, &quot;pm&quot;,</p>
+          <p>context, (ctx, index, req) -&gt; {</p>
+          <p>PaymentStatus status = ctx.getPaymentStatus();</p>
+          <p>boolean replay = PaymentStatus.PENDING.equals(status);</p>
+          <p>return PostPaymentResponse.from(</p>
+          <p>replay ? ctx.getStoredPayment()</p>
+          <p>: ctx.getProcessedPayment());</p>
+          <p>});</p>
+          <p>}</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bSq">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>One context per request; the nodes are stateless singletons - concurrency without locks.</p>
+            </li>
+            <li>
+              <p>Context Object + Pipeline: shared state travels, behavior stays in the nodes.</p>
+            </li>
+            <li>
+              <p>After the chain, one ternary decides: replay the stored payment or return the fresh result.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bSx">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bSy">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: ordering plus a single shared state is what lets us reason about &quot;charged exactly once&quot;.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bSu">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>08 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bIL">
+      <content>
+        <p>From the controller we go into the service. The first thing it does is create a PaymentProcessContext - one object that carries everything this request will ever need. That single decision shapes the whole codebase: because the context holds all mutable state, the eight nodes can be stateless singletons, and we get safe concurrency without a single lock. The service also owns the exit: after the chain finishes, one ternary decides whether this was a fresh payment or a replay of a stored one.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puh">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bYY">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 3 / 11 - THE FLOW IS DECLARED</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bYP">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Flow declared: order is configuration, not code</p>
+        </content>
+      </shape>
+      <line id="bYf" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bYd">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bYK">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>&lt;chain name=&quot;payment_process&quot;&gt;</p>
+          <p>&lt;node id=&quot;validate&quot; class=&quot;PaymentValidateNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;idempotency&quot; class=&quot;IdempotencyCheckNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;assemble&quot; class=&quot;BankRequestAssembleNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;initiate&quot; class=&quot;PaymentInitiateNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;bank-invoke&quot; class=&quot;BankInvokeNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;parse&quot; class=&quot;BankResponseParseNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;finalize&quot; class=&quot;PaymentFinalizeNode&quot;/&gt;</p>
+          <p>&lt;node id=&quot;audit&quot; class=&quot;PaymentAuditNode&quot;/&gt;</p>
+          <p>&lt;/chain&gt;</p>
+          <p>// payment-flow.xml - loaded by LiteFlow</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bYI">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>The order of operations is data, not code - reorder without recompiling.</p>
+            </li>
+            <li>
+              <p>Open / Closed: a new concern is a new node joined to the chain; existing nodes stay untouched.</p>
+            </li>
+            <li>
+              <p>Honest trade-off: an external DSL is invisible to static analysis - we compensate with one class per node and tests.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bYs">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYH">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: the sequence of a payment is a product decision - keeping it visible keeps it reviewable.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bYS">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>09 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bfg">
+      <content>
+        <p>The order of the eight steps is not hard-coded anywhere - it lives in one XML file that LiteFlow loads at startup. Why do it this way? Because the sequence of a payment is a product decision: where validation happens, where idempotency is checked, when we write the record. Declaring it as configuration makes it visible and reviewable, and adding a new step means adding a node, not editing the old ones. The trade-off - an external DSL the IDE cannot trace - is paid back by one class per node and tests that pin the behavior.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pub">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bSh">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 4 / 11 - VALIDATION</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bSD">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Validation: rules register themselves</p>
+        </content>
+      </shape>
+      <line id="bSm" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bSJ">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bSC">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>public interface PaymentValidationRule {</p>
+          <p>Set&lt;String&gt; validate(PostPaymentRequest request);</p>
+          <p>}</p>
+          <p>@Component</p>
+          <p>public class CardNumberValidationRule</p>
+          <p>implements PaymentValidationRule {</p>
+          <p>public Set&lt;String&gt; validate(PostPaymentRequest r) {</p>
+          <p>// Luhn check, length, digits only</p>
+          <p>}</p>
+          <p>}</p>
+          <p>// Spring injects every rule - adding one</p>
+          <p>// is simply adding a class</p>
+          <p>private final List&lt;PaymentValidationRule&gt; rules;</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bSb">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Strategy pattern: one check per class, self-registered by Spring - no registry to maintain.</p>
+            </li>
+            <li>
+              <p>All errors are collected, not fail-fast - one 400 instead of several round trips.</p>
+            </li>
+            <li>
+              <p>Pure functions: no side effects, no state - trivially unit-testable.</p>
+            </li>
+            <li>
+              <p>Open / Closed: a new rule touches nothing else.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bSQ">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYF">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: &quot;Rejected&quot; must be cheap, complete, and provable - this is the gate before the bank.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bSe">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>10 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bfQ">
+      <content>
+        <p>Stop four is validation, and it is the first gate. Every rule - card number, expiry, amount, currency - implements one interface and is discovered by Spring. That is the Strategy pattern doing real work: adding a new rule is literally adding a class, with no registry to update. Two behaviors I want to highlight: we collect all errors instead of stopping at the first, so the merchant gets one complete 400; and the rules are pure functions, which makes them the easiest code in the project to unit test.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pud">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bYr">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 5 / 11 - IDEMPOTENCY</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bYo">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Idempotency: never charge twice</p>
+        </content>
+      </shape>
+      <line id="bYW" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bYi">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bYn">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>if (idempotencyKey != null) {</p>
+          <p>Optional&lt;Payment&gt; existing =</p>
+          <p>repository.findById(idempotencyKey);</p>
+          <p>if (existing.isPresent()) {</p>
+          <p>if (!samePayload(existing.get(), request)) {</p>
+          <p>throw new PaymentConflictException(); // 409</p>
+          <p>}</p>
+          <p>context.setStoredPayment(existing.get());</p>
+          <p>context.setPaymentStatus(PaymentStatus.PENDING);</p>
+          <p>chain.setIsEnd(true); // replay - stop before bank</p>
+          <p>}</p>
+          <p>}</p>
+          <p>// payload compare ignores cvv - clients may</p>
+          <p>// regenerate it when they retry</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bYa">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>A retried request must not charge twice - the core payments guarantee.</p>
+            </li>
+            <li>
+              <p>Replay: return the stored result, end the chain - the bank is not called again.</p>
+            </li>
+            <li>
+              <p>Same key, different payload - 409; we never silently override a stored payment.</p>
+            </li>
+            <li>
+              <p>The key doubles as the primary key - the unique index enforces exactly-once at the storage layer.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bYc">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYT">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: idempotency lives before the bank on purpose - the check is cheap, and the retry is safe.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bYB">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>11 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bsf">
+      <content>
+        <p>Stop five is where the first big guarantee is enforced. If the merchant sent an Idempotency-Key and we already have a payment with that key, we compare the payloads. If they differ, that is a 409 - we will not silently overwrite a stored payment. If they match, this is a retry: we put the stored result on the context and end the chain right here, before the bank is ever called again. Notice the key is also the primary key in storage, so the database itself enforces exactly-once, not just our check.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puy">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bYA">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 6 / 11 - ASSEMBLE THE BANK REQUEST</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bYt">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Assemble: the bank&apos;s format stays in the bank&apos;s corner</p>
+        </content>
+      </shape>
+      <line id="bYj" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bYG">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bYN">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>BankPaymentRequest bankRequest =</p>
+          <p>BankPaymentRequest.builder()</p>
+          <p>.cardNumber(request.getCardNumber())</p>
+          <p>.expiryMonth(String.format(&quot;%02d&quot;,</p>
+          <p>request.getExpiryMonth()))</p>
+          <p>.expiryYear(String.valueOf(</p>
+          <p>request.getExpiryYear()))</p>
+          <p>.amount(request.getAmount())</p>
+          <p>.currency(request.getCurrency())</p>
+          <p>.cvv(request.getCvv())</p>
+          <p>.build();</p>
+          <p>// MM -&gt; MM/yyyy ; cvv stored as String</p>
+          <p>// toString() masks the PAN</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bYw">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Anti-Corruption Layer: the bank&apos;s wire format lives only in the client package.</p>
+            </li>
+            <li>
+              <p>One converter absorbs the differences - zero-padding, string cvv - in exactly one place.</p>
+            </li>
+            <li>
+              <p>toString() masks the PAN: even a debug log cannot leak card data.</p>
+            </li>
+            <li>
+              <p>Bank contract changes touch one file, not the codebase.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bYz">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYR">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: the bank is the boundary we cannot change - so its quirks are quarantined, not spread.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bYO">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>12 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bst">
+      <content>
+        <p>Stop six is where we build the message the bank actually wants. I use a separate DTO for the bank request, and the conversion happens in one place - this is the Anti-Corruption Layer pattern. The bank wants the month zero-padded and the cvv as a string; those quirks are absorbed here and never leak into the rest of the code. And because BankPaymentRequest overrides toString to mask the card number, even a careless debug log cannot print a full PAN.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puR">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bYX">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 7 / 11 - CREATE THE PAYMENT RECORD</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bYU">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Create order: save first, call the bank second</p>
+        </content>
+      </shape>
+      <line id="bYM" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bYp">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bYx">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>Payment payment = Payment.builder()</p>
+          <p>.id(idempotencyKey) // key == primary key</p>
+          <p>.requestAmount(request.getAmount())</p>
+          <p>.requestCurrency(request.getCurrency())</p>
+          <p>.requestCardLastFour(lastFour(request))</p>
+          <p>.status(PaymentStatus.INIT)</p>
+          <p>.build();</p>
+          <p>paymentsRepository.add(payment);</p>
+          <p>// atomic insert: two concurrent duplicates</p>
+          <p>// race on one unique key - the second loses</p>
+          <p>// cleanly, no lock, no retry loop</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bYl">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Write-ahead: the record exists before the bank call - the request is never lost.</p>
+            </li>
+            <li>
+              <p>Key as primary key: duplicates fail the atomic add - exactly-once without locks.</p>
+            </li>
+            <li>
+              <p>INIT means &quot;result unknown&quot; - the honest trace a 503 leaves behind.</p>
+            </li>
+            <li>
+              <p>INIT is a reconciliation hook, never a customer-visible state.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bYv">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYE">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: we never lose the fact that a request happened - the basis for reconciliation and support.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bYg">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>13 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bsR">
+      <content>
+        <p>Stop seven is deliberately placed before the bank call: we save first, then call. The record starts in status INIT - meaning the result is unknown, which is exactly the state a timeout leaves behind. Because the idempotency key is also the primary key, two concurrent duplicates race on one atomic insert and the second one loses cleanly - no locks, no retry loops. Write-ahead is what makes reconciliation and support possible later.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puI">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bYJ">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 8 / 11 - CALL THE BANK</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bYy">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Invoke bank: a timeout means unknown</p>
+        </content>
+      </shape>
+      <line id="bYV" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bYk">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bYq">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>try {</p>
+          <p>String response = restTemplate.postForObject(</p>
+          <p>bankConfig.getUrl() + &quot;/payments&quot;,</p>
+          <p>bankRequest, String.class);</p>
+          <p>context.setBankResponse(response);</p>
+          <p>} catch (RestClientException e) {</p>
+          <p>// 4xx from bank -&gt; 502 (bad gateway)</p>
+          <p>// 5xx / timeout -&gt; 503 (we cannot know)</p>
+          <p>throw new BankUnavailableException(e);</p>
+          <p>}</p>
+          <p>// timeouts: connect 2s, read 5s</p>
+          <p>// no auto-retry in the hot path</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bYe">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>A timeout is not a failure - it is unknown. We answer 503 and do not auto-retry.</p>
+            </li>
+            <li>
+              <p>Bank 4xx -&gt; 502; bank 5xx / timeout -&gt; 503; translated once, at the boundary.</p>
+            </li>
+            <li>
+              <p>Retry belongs to the client or a scheduler - idempotency makes it safe there.</p>
+            </li>
+            <li>
+              <p>The INIT record stays INIT - the trace says &quot;unknown&quot;, never &quot;no&quot;.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bYZ">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bYL">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: the most dangerous lie in payments is pretending &quot;unknown&quot; is &quot;no&quot;.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bYu">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>14 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bsp">
+      <content>
+        <p>Stop eight is the only node that talks to the bank, and it is where the second guarantee lives. We set connect and read timeouts - because the worst outcome in payments is a request that hangs forever. When the bank answers 4xx, that means our request was wrong, so we map it to 502. When it answers 5xx or times out, the result is genuinely unknown, so we return 503 and leave the record in INIT. We deliberately do not auto-retry here: with idempotency in place, a retry is safe to do from the client or a scheduled job, not in the hot path.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puM">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bsC">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 9 / 11 - PARSE THE BANK RESPONSE</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bsD">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Parse: read the bank&apos;s answer exactly once</p>
+        </content>
+      </shape>
+      <line id="bsm" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bdF">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bsk">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>BankResponse bankResponse = objectMapper</p>
+          <p>.readValue(ctx.getBankResponse(),</p>
+          <p>BankResponse.class);</p>
+          <p>PaymentStatus status = PaymentStatus</p>
+          <p>.fromAuthorized(bankResponse.isAuthorized());</p>
+          <p>context.setPaymentStatus(status);</p>
+          <p>context.setAuthorizationCode(</p>
+          <p>normalize(bankResponse.getAuthCode()));</p>
+          <p>// one class owns the bank DTO -</p>
+          <p>// no other node imports it</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bsJ">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>One place reads the bank DTO - a single mapping table, a single import.</p>
+            </li>
+            <li>
+              <p>isAuthorized() becomes the domain enum once; the auth code is normalized here.</p>
+            </li>
+            <li>
+              <p>Flat fields on the context decouple the later nodes from the bank&apos;s JSON shape.</p>
+            </li>
+            <li>
+              <p>Pattern: the Adapter sits at the boundary.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bsh">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bsb">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: if the bank renames a field tomorrow, exactly one class knows about it.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bsQ">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>15 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bse">
+      <content>
+        <p>Stop nine converts the bank&apos;s raw JSON into domain meaning, and it is the only place that does. The response is deserialized into a bank DTO that lives in the client package, isAuthorized is mapped to our status enum once, and the auth code is normalized. Everything the later nodes need is then put on the context as plain fields - so the rest of the code never sees the bank&apos;s JSON shape. If the bank renames a field, exactly one class changes.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puL">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bdf">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 10 / 11 - FINALIZE THE RECORD</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bdd">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Finalize: INIT to terminal, one writer</p>
+        </content>
+      </shape>
+      <line id="bdK" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bdY">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bdI">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>payment.updateStatus(status);</p>
+          <p>payment.setAuthorizationCode(authCode);</p>
+          <p>payment.setProcessedAt(now());</p>
+          <p>paymentsRepository.update(payment);</p>
+          <p>// terminal states only: Authorized, Declined</p>
+          <p>// this node imports nothing from the</p>
+          <p>// bank package - the domain stays clean</p>
+          <p>// authorizationCode is NON_NULL and is</p>
+          <p>// required only for Authorized</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bds">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>INIT moves to a terminal state - Authorized or Declined - exactly here.</p>
+            </li>
+            <li>
+              <p>Single writer: one node owns the terminal transition, so the state machine is readable.</p>
+            </li>
+            <li>
+              <p>The bank package is never imported here - the domain stays clean.</p>
+            </li>
+            <li>
+              <p>Authorized is the only state that requires an authorization code - enforced by Bean Validation.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bdH">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bdS">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: a record with a wrong terminal state is a silent support ticket - the invariant is enforced, not hoped for.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bdW">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>16 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bdP">
+      <content>
+        <p>Stop ten writes the terminal state. The record that was created as INIT is updated to Authorized or Declined, with the auth code and a processed timestamp. I want to highlight three things: this node is the single writer of the terminal transition, so the state machine is easy to read; it does not import anything from the bank package, so our domain model stays clean; and the authorization code is required only for Authorized, and that invariant is enforced by validation, not by hope.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puZ">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bdr">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>STOP 11 / 11 - AUDIT</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bdo">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Audit: guards, logs, and metrics agree</p>
+        </content>
+      </shape>
+      <line id="bdc" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="384" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bdA">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="352" topLeftX="72" topLeftY="100" type="text" id="bdi">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p>if (payment.getStatus() == PaymentStatus.INIT) {</p>
+          <p>throw new IllegalStateException(&quot;still INIT&quot;);</p>
+          <p>}</p>
+          <p>auditLogger.info(&quot;Payment processed: id={},</p>
+          <p>status={}&quot;, payment.getId(),</p>
+          <p>payment.getStatus());</p>
+          <p>metrics.counter(&quot;payments.processed&quot;)</p>
+          <p>.increment();</p>
+          <p>if (replay) {</p>
+          <p>metrics.counter(&quot;payments.replayed&quot;)</p>
+          <p>.increment();</p>
+          <p>}</p>
+          <p>// Prometheus: /actuator/prometheus</p>
+        </content>
+      </shape>
+      <shape width="300" height="250" topLeftX="604" topLeftY="92" type="text" id="bdn">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>The terminal guard: audit fires only on Authorized / Declined - an INIT payment is never counted as processed.</p>
+            </li>
+            <li>
+              <p>Logs and metrics are driven by the same state transition - observability cannot lie.</p>
+            </li>
+            <li>
+              <p>payments.processed / payments.replayed - replay is visible, not hidden.</p>
+            </li>
+            <li>
+              <p>Failures threw earlier, so these counters stay clean.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="300" height="108" topLeftX="604" topLeftY="360" presetHandlers="0" type="rect" id="bda">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="276" height="84" topLeftX="616" topLeftY="374" type="text" id="bdT">
+        <content fontSize="13" fontFamily="Inter" color="rgba(15, 36, 64, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Why it matters: a dashboard that counts &quot;unknown&quot; as &quot;processed&quot; is worse than no dashboard.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bdw">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>17 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bdB">
+      <content>
+        <p>The last stop is audit, and it is where observability is designed in rather than bolted on. First a guard: if the payment is still INIT, we throw - because an unknown result must never be counted as processed. Then we write the audit log and increment Prometheus counters, including a dedicated replay counter so retries are visible. Because every failure path throws before this node, the metrics only ever reflect terminal, truthful states.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puX">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bdb">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>04 - CROSS-CUTTING</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bHf">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>One error contract, stable by construction</p>
+        </content>
+      </shape>
+      <line id="bdL" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <table id="bdC" width="848" height="250" topLeftX="56" topLeftY="92">
+        <colgroup>
+          <col span="1" width="96"/>
+          <col span="1" width="418"/>
+          <col span="1" width="334"/>
+        </colgroup>
+        <tr height="32">
+          <td id="bHP">
+            <fill>
+              <fillColor color="rgba(15, 36, 64, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(255, 255, 255, 1)" bold="true">
+              <p>Status</p>
+            </content>
+          </td>
+          <td id="bHW">
+            <fill>
+              <fillColor color="rgba(15, 36, 64, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(255, 255, 255, 1)" bold="true" textAlign="left">
+              <p>Meaning</p>
+            </content>
+          </td>
+          <td id="bdZ">
+            <fill>
+              <fillColor color="rgba(15, 36, 64, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(255, 255, 255, 1)" bold="true" textAlign="left">
+              <p>Example trigger</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="36">
+          <td id="bde">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>400</p>
+            </content>
+          </td>
+          <td id="bHF">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Request invalid - structured field errors</p>
+            </content>
+          </td>
+          <td id="bHY">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>card_number fails the Luhn check</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="36">
+          <td id="bdx">
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>404</p>
+            </content>
+          </td>
+          <td id="bHK">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Unknown payment id on GET</p>
+            </content>
+          </td>
+          <td id="bHS">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>GET /payment/not-there</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="36">
+          <td id="bdg">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>409</p>
+            </content>
+          </td>
+          <td id="bdk">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Same idempotency key, different payload</p>
+            </content>
+          </td>
+          <td id="bdm">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Same key reused with a new amount</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="36">
+          <td id="bHH">
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>502</p>
+            </content>
+          </td>
+          <td id="bdp">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Bank returned 4xx - our request was refused</p>
+            </content>
+          </td>
+          <td id="bdq">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>The bank replies 422 to the request</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="36">
+          <td id="bdQ">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>503</p>
+            </content>
+          </td>
+          <td id="bHd">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Bank 5xx or timeout - result unknown</p>
+            </content>
+          </td>
+          <td id="bdE">
+            <fill>
+              <fillColor color="rgba(247, 249, 251, 1)"/>
+            </fill>
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Bank down, or read timeout hit</p>
+            </content>
+          </td>
+        </tr>
+        <tr height="38">
+          <td id="bdV">
+            <content fontSize="12" fontFamily="Roboto Mono" color="rgba(15, 36, 64, 1)" bold="true">
+              <p>500</p>
+            </content>
+          </td>
+          <td id="bdD">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>Unexpected bug - mapped once, last resort</p>
+            </content>
+          </td>
+          <td id="bHs">
+            <content fontSize="12" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left">
+              <p>An NPE inside a flow node</p>
+            </content>
+          </td>
+        </tr>
+      </table>
+      <shape width="848" height="22" topLeftX="56" topLeftY="364" type="text" id="bdh">
+        <content fontSize="14" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>One @ControllerAdvice owns every mapping - adding an error type never changes an endpoint.</p>
+        </content>
+      </shape>
+      <shape width="848" height="22" topLeftX="56" topLeftY="396" type="text" id="bHI">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>400 errors are structured: a code per rule, the offending field, and a plain-language message.</p>
+        </content>
+      </shape>
+      <shape width="848" height="44" topLeftX="56" topLeftY="432" type="text" id="bdy">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>The mapping between failure and HTTP code happens in exactly one place - so the Swagger docs, the tests, and the client&apos;s error handling all agree.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bdJ">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>18 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bdu">
+      <content>
+        <p>Every failure the gateway can produce maps to one of six statuses, and all of that mapping lives in a single exception handler. 400 means the request was invalid and we tell the merchant which field. 404 means unknown id. 409 is the idempotency conflict. 502 means the bank refused our request; 503 means we genuinely cannot know the result. 500 is the last-resort catch. Because this mapping exists in one place, the documentation, the tests, and the clients all see the same contract.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="pug">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bdv">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>04 - CROSS-CUTTING</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bdz">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Security and observability: built in, not bolted on</p>
+        </content>
+      </shape>
+      <line id="bdR" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="400" height="26" topLeftX="56" topLeftY="92" type="text" id="bdO">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Card data - what we keep</p>
+        </content>
+      </shape>
+      <shape width="420" height="210" topLeftX="56" topLeftY="136" type="text" id="bdN">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Only the last four digits are stored and returned.</p>
+            </li>
+            <li>
+              <p>PAN and cvv: never at rest, never in responses, never in logs.</p>
+            </li>
+            <li>
+              <p>toString() masking in DTOs - even a careless debug log cannot leak card data.</p>
+            </li>
+            <li>
+              <p>Ids are opaque tokens - nothing sensitive sits in URLs.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="420" height="88" topLeftX="56" topLeftY="380" type="text" id="bdX">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Scope note: card data is not tokenized - in production the first change would be a tokenization service in front of storage.</p>
+        </content>
+      </shape>
+      <line id="bdU" startX="483.99999999999994" startY="92" endX="484" endY="470.0013227490084">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="384" height="26" topLeftX="520" topLeftY="92" type="text" id="bdM">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Observability - what is exposed</p>
+        </content>
+      </shape>
+      <shape width="384" height="210" topLeftX="520" topLeftY="136" type="text" id="bdt">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Health probe: /actuator/health</p>
+            </li>
+            <li>
+              <p>Metrics: /actuator/prometheus - payments.processed, payments.replayed, failure counters.</p>
+            </li>
+            <li>
+              <p>Audit log: structured, with id and status - no card data.</p>
+            </li>
+            <li>
+              <p>The audit guard keeps every number honest - INIT is never counted as processed.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="384" height="88" topLeftX="520" topLeftY="380" type="text" id="bdj">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Failures throw before the audit node - so the metrics only ever reflect terminal, truthful states.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bdG">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>19 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bdl">
+      <content>
+        <p>Two cross-cutting concerns. On security: we keep only the last four digits of the card; the PAN and cvv are never stored, returned, or logged, and every DTO masks its card data in toString. That last point is practical - it makes card data safe even from sloppy debug logs. On observability: the app exposes health and Prometheus metrics, and because the audit node guards on terminal states, the metrics cannot be polluted by unknown outcomes. I should be transparent: card data is not tokenized in this exercise - in production, tokenization is the first thing I would add.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puz">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bHB">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>05 - PACKAGING / HOSTING</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bHr">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Packaging: one command from checkout to running</p>
+        </content>
+      </shape>
+      <line id="bHo" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="532" height="296" topLeftX="56" topLeftY="84" presetHandlers="0" type="rect" id="bHc">
+        <fill>
+          <fillColor color="rgba(247, 249, 251, 1)"/>
+        </fill>
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="504" height="268" topLeftX="72" topLeftY="98" type="text" id="bHi">
+        <content fontSize="11" fontFamily="Roboto Mono" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.32" textAlign="left">
+          <p># build stage</p>
+          <p>FROM gradle:8.5-jdk17 AS build</p>
+          <p>COPY . .</p>
+          <p>RUN gradle clean build -x test</p>
+          <p/>
+          <p># runtime stage - slim and non-root</p>
+          <p>FROM eclipse-temurin:17-jre</p>
+          <p>RUN addgroup -S app &amp;&amp; adduser -S app -G app</p>
+          <p>USER app</p>
+          <p>COPY --from=build</p>
+          <p>build/libs/*.jar /app.jar</p>
+          <p>ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</p>
+        </content>
+      </shape>
+      <shape width="532" height="72" topLeftX="56" topLeftY="396" type="text" id="bHn">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Multi-stage build: the image that runs carries only the JRE and the jar - no build tools. The app runs as a non-root user by default.</p>
+        </content>
+      </shape>
+      <shape width="300" height="300" topLeftX="604" topLeftY="92" type="text" id="bHa">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>docker-compose: two profiles - gateway alone, or gateway + the Mountebank simulator.</p>
+            </li>
+            <li>
+              <p>CI (GitHub Actions): clean build, all 45 tests, JaCoCo gates - line 80%, branch 70%. A regression fails the merge.</p>
+            </li>
+            <li>
+              <p>Run it: docker compose --profile bank up --build - app on :8080, Swagger on /swagger-ui/index.html.</p>
+            </li>
+            <li>
+              <p>Everything in the repo: build, tests, runtime, and the bank simulator agree on one command.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bHT">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>20 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bHA">
+      <content>
+        <p>Packaging is the part that makes this exercise runnable by anyone. The Dockerfile is a multi-stage build: the first stage compiles, the second stage copies only the jar into a slim JRE image, and the app runs as a non-root user. Docker Compose provides two profiles - the gateway alone, or the gateway plus the Mountebank bank simulator - so one command starts the whole system. CI runs the full build with coverage gates, meaning a regression fails before it merges.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puD">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bHN">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>05 - TECHNICAL DOCUMENTATION</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bHv">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Documentation: three layers, zero drift</p>
+        </content>
+      </shape>
+      <line id="bHg" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="60" height="26" topLeftX="56" topLeftY="96" type="text" id="bHt">
+        <content fontSize="18" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>01</p>
+        </content>
+      </shape>
+      <shape width="424" height="28" topLeftX="128" topLeftY="92" type="text" id="bHR">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Swagger / OpenAPI - generated, not written</p>
+        </content>
+      </shape>
+      <shape width="776" height="44" topLeftX="128" topLeftY="126" type="text" id="bHX">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Every endpoint documents its status codes inline via annotations - 201 / 400 / 409 / 502 / 503. The docs are generated from the code, so they cannot drift.</p>
+        </content>
+      </shape>
+      <line id="bHM" startX="56" startY="184" endX="904.0005896224365" endY="184">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="26" topLeftX="56" topLeftY="200" type="text" id="bHx">
+        <content fontSize="18" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>02</p>
+        </content>
+      </shape>
+      <shape width="424" height="28" topLeftX="128" topLeftY="196" type="text" id="bHz">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>README - how to actually run it</p>
+        </content>
+      </shape>
+      <shape width="776" height="44" topLeftX="128" topLeftY="230" type="text" id="bHG">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Compose profiles for gateway and bank simulator, curl examples for both endpoints, the simulator&apos;s card-number rules, and the coverage gate.</p>
+        </content>
+      </shape>
+      <line id="bHl" startX="56" startY="288" endX="904.0005896224365" endY="288">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="60" height="26" topLeftX="56" topLeftY="304" type="text" id="bHE">
+        <content fontSize="18" fontFamily="Inter" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>03</p>
+        </content>
+      </shape>
+      <shape width="424" height="28" topLeftX="128" topLeftY="300" type="text" id="bHZ">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>SOLUTION.md - the reasoning behind the code</p>
+        </content>
+      </shape>
+      <shape width="776" height="64" topLeftX="128" topLeftY="334" type="text" id="bHj">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Design decisions, the trade-offs that came with them, the security scope, and what was deliberately left out - so the reviewer sees the thinking, not just the outcome.</p>
+        </content>
+      </shape>
+      <line id="bHO" startX="56" startY="412" endX="904.0005896224365" endY="412">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="848" height="48" topLeftX="56" topLeftY="436" type="text" id="bHU">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>That is the documentation story: what the API does is generated; how to run it is one page; why it is built this way is written down.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bHp">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>21 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bHw">
+      <content>
+        <p>Documentation comes in three layers. The API contract is generated into Swagger UI from the controller annotations, so it cannot drift. The README tells you how to run the whole thing - compose profiles, curl examples, the simulator&apos;s rules. And SOLUTION.md is the layer I am most proud of: it records the design decisions and trade-offs, so a reviewer can see the reasoning rather than just the code. Documentation is not a page count; it is the absence of surprises.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puG">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bHC">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>05 - TESTING MINDSET</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bHQ">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Testing: 45 tests that assert behavior, not internals</p>
+        </content>
+      </shape>
+      <line id="bKI" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="420" height="26" topLeftX="56" topLeftY="92" type="text" id="bHy">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>What the tests pin down</p>
+        </content>
+      </shape>
+      <shape width="420" height="300" topLeftX="56" topLeftY="136" type="text" id="bHk">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>Behavior over implementation: assert status, stored state, and how many times the bank was called - not internal calls.</p>
+            </li>
+            <li>
+              <p>Rejected -&gt; zero bank calls. Retry -&gt; exactly one bank call. Conflict -&gt; 409. Timeout -&gt; record stays INIT.</p>
+            </li>
+            <li>
+              <p>Real timeouts tested against a JDK HttpServer in the integration suite - the hardest case is not mocked.</p>
+            </li>
+            <li>
+              <p>CI gates: line 80%, branch 70% - a regression fails the build.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <line id="bHh" startX="483.99999999999994" startY="92" endX="484" endY="470.0013227490084">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="384" height="26" topLeftX="520" topLeftY="92" type="text" id="bHm">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The pyramid</p>
+        </content>
+      </shape>
+      <shape width="256" height="56" topLeftX="592" topLeftY="120" presetHandlers="0" type="rect" id="bHL">
+        <fill>
+          <fillColor color="rgba(15, 36, 64, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="256" height="44" topLeftX="592" topLeftY="128" type="text" id="bHu">
+        <content fontSize="12" fontFamily="Inter" color="rgba(255, 255, 255, 1)" bold="true" lineSpacing="multiple:1.2" textAlign="center" wrap="false">
+          <p>Web + integration - 23</p>
+        </content>
+      </shape>
+      <shape width="336" height="56" topLeftX="552" topLeftY="176" presetHandlers="0" type="rect" id="bHe">
+        <fill>
+          <fillColor color="rgba(39, 121, 167, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="336" height="44" topLeftX="552" topLeftY="184" type="text" id="bHb">
+        <content fontSize="12" fontFamily="Inter" color="rgba(255, 255, 255, 1)" bold="true" lineSpacing="multiple:1.2" textAlign="center" wrap="false">
+          <p>Flow slice (chain + nodes) - 6</p>
+        </content>
+      </shape>
+      <shape width="416" height="56" topLeftX="512" topLeftY="232" presetHandlers="0" type="rect" id="bKF">
+        <fill>
+          <fillColor color="rgba(232, 241, 247, 1)"/>
+        </fill>
+        <content fontSize="16" fontFamily="思源黑体" color="rgba(31, 35, 41, 1)"/>
+      </shape>
+      <shape width="416" height="44" topLeftX="512" topLeftY="240" type="text" id="bHV">
+        <content fontSize="12" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" lineSpacing="multiple:1.2" textAlign="center" wrap="false">
+          <p>Unit (rules, mapping, model) - 16</p>
+        </content>
+      </shape>
+      <shape width="384" height="66" topLeftX="520" topLeftY="308" type="text" id="bHJ">
+        <content fontSize="13" fontFamily="Inter" color="rgba(138, 148, 166, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Many fast, focused tests at the bottom; a few slow, end-to-end ones on top - the pyramid stays cheap to run.</p>
+        </content>
+      </shape>
+      <shape width="384" height="80" topLeftX="520" topLeftY="390" type="text" id="bHD">
+        <content fontSize="13" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.35" textAlign="left">
+          <p>Every guarantee on the walkthrough has at least one test that would fail if the guarantee broke - that is what 45 tests are for.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bKP">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>22 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bHq">
+      <content>
+        <p>Testing is where the walkthrough becomes trustworthy. There are 45 tests split across the pyramid - sixteen fast unit tests for rules and mapping, six slice tests that run the chain, and twenty-three web plus integration tests. The key principle is behavior over implementation: we assert what happened - the status, the stored state, the number of bank calls - not how the code did it. The integration suite even uses a real JDK HttpServer to prove timeout behavior with real sockets. CI enforces line and branch coverage gates, so a regression cannot quietly merge.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puA">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bKd">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>06 - SCOPE AND EVOLUTION</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bKK">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>What I left out - and how it would grow</p>
+        </content>
+      </shape>
+      <line id="bKY" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="420" height="26" topLeftX="56" topLeftY="92" type="text" id="bKB">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Deliberately not built</p>
+        </content>
+      </shape>
+      <shape width="420" height="300" topLeftX="56" topLeftY="136" type="text" id="bKs">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="bullet" listStyle="circle-hollow-square" textAlign="left">
+          <ul>
+            <li>
+              <p>No DB engine - in-memory repository: right for an exercise, wrong for production; the swap point is one interface.</p>
+            </li>
+            <li>
+              <p>No merchant authentication - out of scope, documented in SOLUTION.md.</p>
+            </li>
+            <li>
+              <p>No retry scheduler / reconciliation job - the state machine already leaves the hook: INIT plus the idempotency key.</p>
+            </li>
+            <li>
+              <p>No circuit breaker - one bank, one instance; timeouts already cap the damage.</p>
+            </li>
+          </ul>
+        </content>
+      </shape>
+      <line id="bKH" startX="483.99999999999994" startY="92" endX="484" endY="470.0013227490084">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="384" height="26" topLeftX="520" topLeftY="92" type="text" id="bKS">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Evolution order in production</p>
+        </content>
+      </shape>
+      <shape width="384" height="300" topLeftX="520" topLeftY="136" type="text" id="bKW">
+        <content fontSize="13.5" fontFamily="Inter" color="rgba(61, 74, 92, 1)" lineSpacing="multiple:1.4" list="number" listStyle="number-lower-alpha-lower-roman" textAlign="left">
+          <ol>
+            <li>
+              <p>Tokenize card data, then move to real persistence - RDBMS with the same unique key.</p>
+            </li>
+            <li>
+              <p>Reconciliation job: sweep INIT records and ask the bank for late answers.</p>
+            </li>
+            <li>
+              <p>Circuit breaker plus scheduled retry with backoff.</p>
+            </li>
+            <li>
+              <p>Async via an event stream once consumers exist - the context pattern survives the move.</p>
+            </li>
+          </ol>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bKi">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>23 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bKf">
+      <content>
+        <p>Equally important as what I built is what I did not, and why. There is no database engine - the repository is in-memory, which is correct for this exercise; in production, persistence is the first swap, and the interface already isolates it. No merchant authentication, no retry scheduler, no circuit breaker - each is documented as out of scope or unnecessary at this size. And I keep the evolution path explicit: tokenization first, then reconciliation over INIT records, then circuit breaking, then async once there are consumers.</p>
+      </content>
+    </note>
+  </slide>
+  <slide id="puQ">
+    <style/>
+    <data>
+      <shape width="400" height="20" topLeftX="56" topLeftY="10" type="text" id="bKz">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39, 121, 167, 1)" textAlign="left" wrap="false">
+          <p>CLOSING</p>
+        </content>
+      </shape>
+      <shape width="848" height="34" topLeftX="56" topLeftY="30" type="text" id="bKO">
+        <content textType="title" fontSize="24" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The four guarantees - and where they live</p>
+        </content>
+      </shape>
+      <line id="bKU" startX="56" startY="64" endX="904.0005896224365" endY="64">
+        <border color="rgba(39, 121, 167, 1)"/>
+      </line>
+      <shape width="44" height="28" topLeftX="56" topLeftY="96" type="text" id="bKp">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>01</p>
+        </content>
+      </shape>
+      <shape width="720" height="28" topLeftX="120" topLeftY="94" type="text" id="bKo">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>The bank is charged at most once - idempotency + unique key</p>
+        </content>
+      </shape>
+      <shape width="720" height="22" topLeftX="120" topLeftY="122" type="text" id="bKc">
+        <content fontSize="12.5" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>Stops 2, 5, 7 - service ternary, idempotency node, atomic create</p>
+        </content>
+      </shape>
+      <line id="bKj" startX="56" startY="160" endX="904.0005896224365" endY="160">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="44" height="28" topLeftX="56" topLeftY="176" type="text" id="bKN">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>02</p>
+        </content>
+      </shape>
+      <shape width="720" height="28" topLeftX="120" topLeftY="174" type="text" id="bKv">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>We never fake a result - timeout means unknown</p>
+        </content>
+      </shape>
+      <shape width="720" height="22" topLeftX="120" topLeftY="202" type="text" id="bKa">
+        <content fontSize="12.5" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>Stop 8 - 503 + INIT, no auto-retry in the hot path</p>
+        </content>
+      </shape>
+      <line id="bKw" startX="56" startY="240" endX="904.0005896224365" endY="240">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="44" height="28" topLeftX="56" topLeftY="256" type="text" id="bKR">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>03</p>
+        </content>
+      </shape>
+      <shape width="720" height="28" topLeftX="120" topLeftY="254" type="text" id="bKX">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>No card data at rest, in responses, or in logs</p>
+        </content>
+      </shape>
+      <shape width="720" height="22" topLeftX="120" topLeftY="282" type="text" id="bKM">
+        <content fontSize="12.5" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>Stops 6, 9 - ACL masking, last-four-only storage, GET contract</p>
+        </content>
+      </shape>
+      <line id="bKr" startX="56" startY="320" endX="904.0005896224365" endY="320">
+        <border color="rgba(214, 222, 232, 1)" width="1"/>
+      </line>
+      <shape width="44" height="28" topLeftX="56" topLeftY="336" type="text" id="bKT">
+        <content fontSize="16" fontFamily="Roboto Mono" color="rgba(39, 121, 167, 1)" bold="true" textAlign="left" wrap="false">
+          <p>04</p>
+        </content>
+      </shape>
+      <shape width="720" height="28" topLeftX="120" topLeftY="334" type="text" id="bKt">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Observability cannot lie - guards and metrics agree</p>
+        </content>
+      </shape>
+      <shape width="720" height="22" topLeftX="120" topLeftY="362" type="text" id="bKG">
+        <content fontSize="12.5" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="left" wrap="false">
+          <p>Stop 11 - terminal-state guard before log and counters</p>
+        </content>
+      </shape>
+      <shape width="848" height="28" topLeftX="56" topLeftY="416" type="text" id="bKl">
+        <content fontSize="16" fontFamily="Inter" color="rgba(15, 36, 64, 1)" bold="true" textAlign="left" wrap="false">
+          <p>Every slide maps to a class; every class maps to a test.</p>
+        </content>
+      </shape>
+      <shape width="848" height="28" topLeftX="56" topLeftY="452" type="text" id="bKE">
+        <content fontSize="14" fontFamily="Inter" color="rgba(61, 74, 92, 1)" textAlign="left" wrap="false">
+          <p>Happy to go deeper anywhere - the design, the trade-offs, or the next step toward production.</p>
+        </content>
+      </shape>
+      <shape width="48" height="18" topLeftX="856" topLeftY="510" type="text" id="bKn">
+        <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138, 148, 166, 1)" textAlign="right" wrap="false">
+          <p>24 / 24</p>
+        </content>
+      </shape>
+    </data>
+    <note id="bKA">
+      <content>
+        <p>Let me close by collecting the whole walkthrough into four guarantees. First, the bank is charged at most once - that is the service ternary, the idempotency node, and the atomic create working together. Second, we never fake a result - a timeout is unknown, and we say so with a 503 and an INIT record. Third, card data never appears at rest, in responses, or in logs. Fourth, our observability cannot lie, because the audit node guards on terminal states. Every slide you saw maps to a class, and every class maps to a test. I would be glad to go deeper on any of it.</p>
+      </content>
+    </note>
+  </slide>
+</presentation>

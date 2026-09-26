@@ -1,0 +1,140 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="300" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>01 - THE SYSTEM</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="34" width="848" height="40">
+      <content textType="title" fontSize="28" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Architecture at a glance</p>
+      </content>
+    </shape>
+    <line startX="56" startY="76" endX="904" endY="76">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="rect" topLeftX="240" topLeftY="104" width="480" height="44">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+      <border color="rgb(39, 121, 167)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="240" topLeftY="117" width="480" height="22">
+      <content textType="body" fontSize="15" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Controller - translates HTTP, nothing else</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="736" topLeftY="117" width="168" height="22">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138,148,166,1)" wrap="false" textAlign="left">
+        <p>controller</p>
+      </content>
+    </shape>
+    <line startX="240" startY="148" endX="240" endY="166">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="240" topLeftY="166" width="480" height="44">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="240" topLeftY="179" width="480" height="22">
+      <content textType="body" fontSize="15" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Service - one context per request</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="736" topLeftY="179" width="168" height="22">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138,148,166,1)" wrap="false" textAlign="left">
+        <p>service</p>
+      </content>
+    </shape>
+    <line startX="240" startY="210" endX="240" endY="228">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="240" topLeftY="228" width="480" height="44">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="240" topLeftY="241" width="480" height="22">
+      <content textType="body" fontSize="15" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Flow - 8 nodes, stateless singletons</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="736" topLeftY="241" width="168" height="22">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138,148,166,1)" wrap="false" textAlign="left">
+        <p>flow + flow.node</p>
+      </content>
+    </shape>
+    <line startX="240" startY="272" endX="240" endY="290">
+      <border color="rgb(39, 121, 167)" width="2"/>
+      <endArrow type="arrow"/>
+    </line>
+    <shape type="rect" topLeftX="240" topLeftY="290" width="150" height="44">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="240" topLeftY="303" width="150" height="22">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Validation rules</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="405" topLeftY="290" width="150" height="44">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="405" topLeftY="303" width="150" height="22">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Bank client</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="570" topLeftY="290" width="150" height="44">
+      <fill>
+        <fillColor color="rgba(255,255,255,1)"/>
+      </fill>
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </shape>
+    <shape type="text" topLeftX="570" topLeftY="303" width="150" height="22">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" wrap="false">
+        <p>Repository</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="730" topLeftY="303" width="174" height="22">
+      <content textType="caption" fontSize="11" fontFamily="Roboto Mono" color="rgba(138,148,166,1)" wrap="false" textAlign="left">
+        <p>validation, client, repo</p>
+      </content>
+    </shape>
+    <line startX="56" startY="372" endX="904" endY="372">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="392" width="848" height="22">
+      <content textType="body" fontSize="14" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Each layer depends only on the one below it - dependencies point down, never up.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="424" width="848" height="66">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Stateless singletons + a request-scoped context means safe concurrency without locks.</p>
+        <p>One place per concern: the pipeline owns ordering, rules own validation, the client owns the bank format.</p>
+        <p>Adding a step or a rule never touches the controller or the service.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>05 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>This is the shape of the whole codebase. The controller is deliberately thin - it translates HTTP into a call and back. The service creates one context per request and hands it to a pipeline of eight small nodes. The nodes are stateless singletons, so they can be shared across all requests safely; all mutable data lives in the context. Below the pipeline sit three helpers: validation rules, the bank client, and the repository. Dependencies point downward - each layer only knows the one beneath it.</p>
+    </content>
+  </note>
+</slide>

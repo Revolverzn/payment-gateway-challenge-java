@@ -1,0 +1,90 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <data>
+    <shape type="text" topLeftX="56" topLeftY="10" width="400" height="20">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(39,121,167,1)" wrap="false" textAlign="left">
+        <p>05 - TESTING MINDSET</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="30" width="848" height="34">
+      <content textType="title" fontSize="24" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>Testing: 45 tests that assert behavior, not internals</p>
+      </content>
+    </shape>
+    <line startX="56" startY="64" endX="904" endY="64">
+      <border color="rgb(39, 121, 167)" width="2"/>
+    </line>
+    <shape type="text" topLeftX="56" topLeftY="92" width="420" height="26">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>What the tests pin down</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="56" topLeftY="136" width="420" height="300">
+      <content textType="body" fontSize="13.5" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.4" textAlign="left">
+        <ul>
+          <li><p>Behavior over implementation: assert status, stored state, and how many times the bank was called - not internal calls.</p></li>
+          <li><p>Rejected -&gt; zero bank calls. Retry -&gt; exactly one bank call. Conflict -&gt; 409. Timeout -&gt; record stays INIT.</p></li>
+          <li><p>Real timeouts tested against a JDK HttpServer in the integration suite - the hardest case is not mocked.</p></li>
+          <li><p>CI gates: line 80%, branch 70% - a regression fails the build.</p></li>
+        </ul>
+      </content>
+    </shape>
+    <line startX="484" startY="92" endX="484" endY="470">
+      <border color="rgb(214, 222, 232)" width="1"/>
+    </line>
+    <shape type="text" topLeftX="520" topLeftY="92" width="384" height="26">
+      <content textType="body" fontSize="16" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" wrap="false" textAlign="left">
+        <p>The pyramid</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="592" topLeftY="120" width="256" height="56">
+      <fill>
+        <fillColor color="rgba(15,36,64,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="592" topLeftY="128" width="256" height="44">
+      <content textType="body" fontSize="12" fontFamily="Inter" bold="true" color="rgba(255,255,255,1)" textAlign="center" lineSpacing="multiple:1.2" wrap="false">
+        <p>Web + integration - 23</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="552" topLeftY="176" width="336" height="56">
+      <fill>
+        <fillColor color="rgba(39,121,167,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="552" topLeftY="184" width="336" height="44">
+      <content textType="body" fontSize="12" fontFamily="Inter" bold="true" color="rgba(255,255,255,1)" textAlign="center" lineSpacing="multiple:1.2" wrap="false">
+        <p>Flow slice (chain + nodes) - 6</p>
+      </content>
+    </shape>
+    <shape type="rect" topLeftX="512" topLeftY="232" width="416" height="56">
+      <fill>
+        <fillColor color="rgba(232,241,247,1)"/>
+      </fill>
+    </shape>
+    <shape type="text" topLeftX="512" topLeftY="240" width="416" height="44">
+      <content textType="body" fontSize="12" fontFamily="Inter" bold="true" color="rgba(15,36,64,1)" textAlign="center" lineSpacing="multiple:1.2" wrap="false">
+        <p>Unit (rules, mapping, model) - 16</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="308" width="384" height="66">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(138,148,166,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Many fast, focused tests at the bottom; a few slow, end-to-end ones on top - the pyramid stays cheap to run.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="520" topLeftY="390" width="384" height="80">
+      <content textType="body" fontSize="13" fontFamily="Inter" color="rgba(61,74,92,1)" lineSpacing="multiple:1.35" textAlign="left">
+        <p>Every guarantee on the walkthrough has at least one test that would fail if the guarantee broke - that is what 45 tests are for.</p>
+      </content>
+    </shape>
+    <shape type="text" topLeftX="856" topLeftY="510" width="48" height="18">
+      <content textType="caption" fontSize="12" fontFamily="Inter" color="rgba(138,148,166,1)" textAlign="right" wrap="false">
+        <p>22 / 24</p>
+      </content>
+    </shape>
+  </data>
+  <note>
+    <content textType="body">
+      <p>Testing is where the walkthrough becomes trustworthy. There are 45 tests split across the pyramid - sixteen fast unit tests for rules and mapping, six slice tests that run the chain, and twenty-three web plus integration tests. The key principle is behavior over implementation: we assert what happened - the status, the stored state, the number of bank calls - not how the code did it. The integration suite even uses a real JDK HttpServer to prove timeout behavior with real sockets. CI enforces line and branch coverage gates, so a regression cannot quietly merge.</p>
+    </content>
+  </note>
+</slide>
