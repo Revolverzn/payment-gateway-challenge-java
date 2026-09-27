@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Gateway · Observability</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --border: #e2e6ec;
+    --border-strong: #cfd6e0;
+    --text: #1f2937;
+    --muted: #596273;
+    --green: #15803d;
+    --green-bg: #dcfce7;
+    --amber: #b45309;
+    --amber-bg: #fef3c7;
+    --red: #b91c1c;
+    --red-bg: #fee2e2;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+    --grey: #475569;
+    --grey-bg: #eef1f5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    padding: 28px 32px; font-size: 14px;
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+  h1 { font-size: 19px; font-weight: 650; }
+  h1 span { color: var(--muted); font-weight: 400; }
+  .meta { color: var(--muted); font-size: 12.5px; }
+  .meta a { color: var(--blue); text-decoration: none; margin-left: 10px; }
+  .meta a:hover { text-decoration: underline; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; margin-bottom: 26px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+  }
+  .card .label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 7px; }
+  .card .value { font-size: 24px; font-weight: 650; line-height: 1.1; }
+  .card .sub { font-size: 12px; color: var(--muted); margin-top: 5px; }
+  h2 { font-size: 13px; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+  .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: 9px 14px; font-size: 11.5px; font-weight: 650;
+    color: var(--grey); background: #fafbfc; border-bottom: 1px solid var(--border-strong);
+    text-transform: uppercase; letter-spacing: .4px; white-space: nowrap;
+  }
+  td { padding: 8px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+  .mono { font-family: Consolas, "Cascadia Code", monospace; font-size: 12.5px; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+  .s-2 { color: var(--green); background: var(--green-bg); }
+  .s-3 { color: var(--blue); background: var(--blue-bg); }
+  .s-4 { color: var(--amber); background: var(--amber-bg); }
+  .s-5 { color: var(--red); background: var(--red-bg); }
+  .method-POST { color: var(--blue); font-weight: 600; }
+  .method-GET { color: var(--green); font-weight: 600; }
+  .b-Authorized { color: var(--green); background: var(--green-bg); }
+  .b-Declined { color: var(--amber); background: var(--amber-bg); }
+  .b-Init { color: var(--grey); background: var(--grey-bg); }
+  .table-wrap + h2 { margin-top: 26px; }
+  .muted { color: var(--muted); }
+  .empty { text-align: center; color: var(--muted); padding: 34px; }
+  .stale { color: var(--red); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Payment Gateway <span>· Observability</span></h1>
+  <div class="meta">
+    <span id="updated">connecting…</span>
+    <a href="/actuator/httpexchanges">raw journal</a>
+    <a href="/actuator/prometheus">prometheus</a>
+    <a href="/swagger-ui/index.html">swagger</a>
+  </div>
+</header>
+
+<div class="cards" id="cards"></div>
+
+<h2>Recent activity — HTTP request joined with its payment (newest first)</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th><th>Method</th><th>Path</th><th>Idempotency key</th><th>HTTP</th>
+        <th>Payment ID</th><th>Payment status</th><th>Amount</th><th>Currency</th><th>ms</th>
+      </tr>
+    </thead>
+    <tbody id="activity">
+      <tr><td colspan="10" class="empty">No payment traffic observed yet — send a request to /payments.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// Thin read-only view: every number below comes straight from a stock
+// Spring Boot Actuator endpoint; this page collects nothing itself.
+const $ = id => document.getElementById(id);
+
+async function getJson(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  // A tagged metric (e.g. payments.processed{status=AUTHORIZED}) returns 404
+  // until the first such event happens — treat that as zero.
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(url + ' -> ' + res.status);
+  return res.json();
+}
+
+const countOf = m => {
+  if (!m) return 0;
+  const c = m.measurements.find(x => x.statistic === 'COUNT');
+  return c ? c.value : 0;
+};
+const totalTimeOf = m => {
+  if (!m) return 0;
+  const t = m.measurements.find(x => x.statistic === 'TOTAL_TIME');
+  return t ? t.value : 0;
+};
+const maxOf = m => {
+  if (!m) return 0;
+  const x = m.measurements.find(s => s.statistic === 'MAX');
+  return x ? x.value : 0;
+};
+const card = (label, value, sub) =>
+  `<div class="card"><div class="label">${label}</div><div class="value">${value}</div>`
+  + (sub != null ? `<div class="sub">${sub}</div>` : '') + `</div>`;
+const pad = n => String(n).padStart(2, '0');
+const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function render() {
+  try {
+    const [health, bank, authCount, declinedCount, rows] = await Promise.all([
+      getJson('/actuator/health'),
+      getJson('/actuator/metrics/http.client.requests'),
+      getJson('/actuator/metrics/payments.processed?tag=status:AUTHORIZED'),
+      getJson('/actuator/metrics/payments.processed?tag=status:DECLINED'),
+      getJson('/observability/api/activity')
+    ]);
+
+    // The activity feed is already business-only and server-joined: each row
+    // is one HTTP request plus the payment it produced (if any), correlated
+    // via X-Payment-Id on POST or the path id on GET.
+    const total = rows.length;
+    const ok = rows.filter(r => r.httpStatus >= 200 && r.httpStatus < 300).length;
+    const rate = total ? (ok / total * 100).toFixed(1) + '%' : '—';
+    const bankCalls = countOf(bank);
+    const bankAvg = bankCalls ? (totalTimeOf(bank) / bankCalls * 1000).toFixed(0) : '—';
+    // Micrometer's MAX is a rolling-window value and reads 0 once no recent
+    // sample exists — show a dash rather than a misleading "0 ms".
+    const bankMaxMs = Math.round(maxOf(bank) * 1000);
+    const bankMax = bankCalls && bankMaxMs > 0 ? bankMaxMs : '—';
+
+    $('cards').innerHTML =
+      card('Health', health ? esc(health.status) : '—')
+      + card('Recent requests', total, 'most recent business requests')
+      + card('Success rate', rate, ok + ' of ' + total + ' with 2xx')
+      + card('Authorized', countOf(authCount), 'since startup')
+      + card('Declined', countOf(declinedCount), 'since startup')
+      + card('Bank calls', bankCalls, 'since startup')
+      + card('Bank avg ms', bankAvg, 'since startup')
+      + card('Bank max ms', bankMax, 'recent window');
+
+    if (rows.length === 0) {
+      $('activity').innerHTML = '<tr><td colspan="10" class="empty">No payment traffic observed yet — send a request to /payments.</td></tr>';
+    } else {
+      $('activity').innerHTML = rows.map(r => {
+        const d = new Date(r.timestamp);
+        const time = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        const httpCls = 's-' + String(r.httpStatus).charAt(0);
+        // Business cells stay empty for requests that produced no payment
+        // (400 rejection, bank outage, 404 lookup).
+        const keyCell = r.idempotencyKey
+            ? `<span class="mono">${esc(r.idempotencyKey)}</span>`
+            : '<span class="muted">—</span>';
+        const idCell = r.paymentId
+            ? `<span class="mono" title="${esc(r.paymentId)}">${esc(r.paymentId.substring(0, 8))}…</span>`
+            : '<span class="muted">—</span>';
+        const statusCell = r.paymentStatus
+            ? `<span class="badge b-${esc(r.paymentStatus)}">${esc(r.paymentStatus)}</span>`
+            : '<span class="muted">—</span>';
+        return `<tr>
+          <td class="mono">${time}</td>
+          <td class="mono method-${esc(r.method)}">${esc(r.method)}</td>
+          <td class="mono">${esc(r.path)}</td>
+          <td>${keyCell}</td>
+          <td><span class="badge ${httpCls}">${r.httpStatus}</span></td>
+          <td>${idCell}</td>
+          <td>${statusCell}</td>
+          <td class="mono">${r.amount != null ? r.amount : '<span class="muted">—</span>'}</td>
+          <td class="mono">${r.currency ? esc(r.currency) : '<span class="muted">—</span>'}</td>
+          <td class="mono">${r.durationMs}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    $('updated').textContent = 'updated ' + new Date().toLocaleTimeString();
+    $('updated').classList.remove('stale');
+  } catch (err) {
+    $('updated').textContent = 'disconnected (' + err.message + ')';
+    $('updated').classList.add('stale');
+  }
+}
+
+render();
+setInterval(render, 3000);
+</script>
+</body>
+</html>

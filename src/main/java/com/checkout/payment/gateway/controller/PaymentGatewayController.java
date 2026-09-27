@@ -55,7 +55,12 @@ public class PaymentGatewayController {
       @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
     PostPaymentResponse response =
         paymentGatewayService.processPayment(paymentRequest, idempotencyKey);
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
+    // Lets clients (and the observability journal, which records response
+    // headers) correlate this HTTP call with the stored payment resource,
+    // including idempotent replays of the same payment.
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .header("X-Payment-Id", response.getId().toString())
+        .body(response);
   }
 
   @Operation(summary = "Retrieve a previously processed payment")
